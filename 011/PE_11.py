@@ -33,37 +33,21 @@ def main():
             [20, 73, 35, 29, 78, 31, 90, 1, 74, 31, 49, 71, 48, 86, 81, 16, 23, 57, 5, 54],
             [1, 70, 54, 71, 83, 51, 54, 69, 16, 92, 33, 48, 61, 43, 52, 1, 89, 19, 67, 48]]
 
-    max_row = max_column = max_diagonal = 0
+    def solver(f):
+        max_product = 0
+        for i, j in cartesian_product(range(len(grid)), repeat=2):
+            try:
+                max_product = max(max_product, product(f(i, j)))
+            except IndexError:
+                continue
+        return max_product
 
-    # calculate maximum product across rows
-    for i, j in cartesian_product(range(len(grid)), repeat=2):
-        try:
-            max_row = max(max_row, product(grid[i][j:j+4]))
-        except IndexError:
-            continue
+    max_row = solver(lambda i, j: [grid[i][j + k] for k in range(4)])
+    max_column = solver(lambda i, j: [grid[i + k][j] for k in range(4)])
+    max_diagonal = solver(lambda i, j: [grid[i + k][j + k] for k in range(4)])
+    max_inverse_diagonal = solver(lambda i, j: [grid[i + k][j - k] for k in range(4)])
 
-    # calculate maximum product across columns
-    for i, j in cartesian_product(range(len(grid)), repeat=2):
-        try:
-            max_column = max(max_column, product([grid[i+k][j] for k in range(4)]))
-        except IndexError:
-            continue
-
-    # calculate maximum product across diagonals
-    for i, j in cartesian_product(range(len(grid)), repeat=2):
-        try:
-            max_diagonal = max(max_diagonal, product([grid[i+k][j+k] for k in range(4)]))
-        except IndexError:
-            continue
-
-    # calculate maximum product across (inverse) diagonals
-    for i, j in cartesian_product(range(len(grid)), repeat=2):
-        try:
-            max_diagonal = max(max_diagonal, product([grid[i+k][j-k] for k in range(4)]))
-        except IndexError:
-            continue
-
-    return max(max_row, max_column, max_diagonal)
+    return max(max_row, max_column, max_diagonal, max_inverse_diagonal)
 
 
 class TestMain(unittest.TestCase):
