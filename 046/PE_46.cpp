@@ -32,7 +32,7 @@ bool isprime(int n) {
 
 int solve_conjecture() {
 
-	int n = 9;  // first odd composite number
+    int n = 9;  // first odd composite number
 
     do {
         if (!isprime(n)) {  // if true then we have an odd composite number
