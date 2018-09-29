@@ -28,7 +28,7 @@ bool is_prime(int n) {
 /* Return circular primality of n */
 bool is_circular_prime(int n) {
     std::string s = std::to_string(n);
-    for (int i = 0; i < s.length(); i++) {
+    for (unsigned long i = 0; i < s.length(); i++) {
         if (!is_prime(stoi(s)))
             return false;
         s = s.substr(1) + s.substr(0, 1);
