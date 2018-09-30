@@ -21,7 +21,7 @@ NOTE: Solution = 5482660
 inline int pentagon(int n) { return n * (3 * n - 1) / 2; }
 
 bool is_pentagon(int n) {
-    int test_root = static_cast<int>(1 + sqrt(1 + 24 * n) / 6);
+    int test_root = static_cast<int>((1 + sqrt(1 + 24 * n)) / 6);
     return pentagon(test_root) == n;
 }
 
