@@ -44,10 +44,10 @@ def PE_38():
             if observed_digits.isdisjoint(set(product)):
                 observed_digits |= set(product)
                 concatenated_products += product
+                if is_pandigital(concatenated_products):
+                    return int(concatenated_products)
             else:
                 return None
-            if is_pandigital(concatenated_products):
-                return int(concatenated_products)
     pandigital_numbers = set()
     for base in range(1, 9999):
         pandigital_number = generate_pandigital_number(base)
