@@ -14,13 +14,12 @@ Solution: 997651
 */
 
 #include <iostream>
-#include <numeric>
 #include <set>
 #include <vector>
 
 std::set<long> get_primes(long);
 
-std::pair<long, long> get_chain(const std::set<long>&, const long&, const long&);
+std::pair<long, long> get_chain(const std::set<long>&, const long&);
 
 int main() {
 
@@ -29,12 +28,12 @@ int main() {
     // calculate primes up to n - store as a set for sequential access and for checking inclusion
     std::set<long> primes = get_primes(n);
 
-     // create pairs of consecutive prime chain lengths and consecutive prime sums,
-     // retaining the pair with the maximum chain length
+     // create pairs of consecutive prime chain lengths and consecutive prime sums, retaining the pair with the maximum chain length
     std::pair<long, long> max_chain = std::make_pair(0, 0);
-    for (long seed = 0; seed < primes.size(); ++seed) {
-        std::pair<long, long> chain = get_chain(primes, seed, n);
+    while (!primes.empty()) {
+        std::pair<long, long> chain = get_chain(primes, n);
         max_chain = max(max_chain, chain);
+        primes.erase(primes.begin());
     }
 
     std::cout << "Solution: " << max_chain.second << " (chain length = " << max_chain.first << ")" << std::endl;
@@ -62,20 +61,16 @@ std::set<long> get_primes(long limit) {
     return primes;
 }
 
-std::pair<long, long> get_chain(const std::set<long>& primes, const long& seed, const long& limit) {
+std::pair<long, long> get_chain(const std::set<long>& primes, const long& limit) {
 
     std::pair<long, long> out_pair;
-
     auto it = primes.begin();
-    for (int i = 0; i < seed; i++)
-        ++it;
-    
     long cumulative_sum = 0;
 
     do {
         cumulative_sum += *it;
         if (primes.find(cumulative_sum) != primes.end())
-            out_pair = std::make_pair(std::distance(primes.begin(), it) - seed + 1, cumulative_sum);
+            out_pair = std::make_pair(std::distance(primes.begin(), it), cumulative_sum);
         ++it;
     } while (cumulative_sum + *it <= limit);
 
