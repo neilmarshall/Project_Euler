@@ -16,22 +16,20 @@ than one-million?
 Solution: 4075
 */
 
+#include "../utilities/include/utilities.h"
+
 #include <iostream>
 
-double nCr(double n, double r) {
-    double product = 1;
-    for (long i = 0; i < n - r; ++i)
-    product *= (n - i) / (n - r - i);
-    return product;
-}
-
-
 int main() {
-    const double LIMIT = 1000000;
-    double count = 0;
-    for (double n = 1; n <= 100; ++n) {
-        for (double r = 1; r <= n; ++r) {
-            count += (nCr(n, r) > LIMIT ? 1 : 0);
+
+    const unsigned long LIMIT = 1000000;
+
+    std::unique_ptr< combinations::nCr_Calculator<unsigned long> > nCr (new combinations::nCr_Calculator<unsigned long>);
+
+    int count = 0;
+    for (unsigned long n = 1; n <= 100; ++n) {
+        for (unsigned long r = 1; r <= n; ++r) {
+            count += ((*nCr)(n, r) > LIMIT ? 1 : 0);
         }
     }
 

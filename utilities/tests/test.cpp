@@ -14,7 +14,7 @@ int main() {
     std::cout << std::endl;
 
     std::unique_ptr< combinations::nCr_Calculator<int> > nCr (new combinations::nCr_Calculator<int>);
-    for (int n = 1; n <= 15; n++) {
+    for (int n = 1; n <= 30; n++) {
         for (int r = 0; r <= n; r++) {
             std::cout << (*nCr)(n, r) << " ";
         }

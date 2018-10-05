@@ -13,7 +13,7 @@ namespace combinations {
     template<typename T>
     class nCr_Calculator {
         private:
-            std::map<std::pair<const T&, const T&>, T> calculated_values;
+            std::map<std::pair<const T, const T>, T> calculated_values;
         public:
             T operator () (const T&, const T&);
     };
