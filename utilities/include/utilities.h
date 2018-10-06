@@ -27,9 +27,10 @@ namespace primes {
     class Phi {
         private:
             std::set<T> primes;
+            std::vector<T> totients;
         public:
             Phi(const T&);
-            T operator () (T);
+            T operator () (const T& n) { return totients[n]; };
     };
 }
 
@@ -74,9 +75,10 @@ T combinations::nCr_Calculator<T>::operator () (const T& n, const T& r) {
 template <typename T>
 primes::Phi<T>::Phi(const T& limit) {
 
-    /* constructor function - pre-populates primes up to limit so
+    /* constructor function - pre-populates primes totients up to limit so
        Euler's totient function can be efficiently checked */
 
+    // first generate primes
     std::vector<bool> flags = {false, false};
     for (T i = 2; i <= limit; i++)
         flags.push_back(true);
@@ -90,27 +92,19 @@ primes::Phi<T>::Phi(const T& limit) {
         if (flags[i])
             primes.insert(i);
     }
-}
 
-template <typename T>
-T primes::Phi<T>::operator () (T n) {
+    // now pre-populate totients with each value of n up to limit
+    for (T i = 0; i <= limit; i++)
+        totients.push_back(i);
 
-    /* return Phi(n), i.e. Euler's totient function */
-
-    if (primes.find(n) != primes.end())
-        return n - 1;
-
-    T product = n;
+    // now for each prime p, multiply the totient of each multiple of that prime by (p - 1) / p
     for (auto prime : primes) {
-        if (prime > n)
-            break;
-        if (n % prime == 0) {
-            product /= prime;
-            product *= prime - 1;
-            n /= prime;
+        T factor = 1;
+        while (prime * factor <= limit) {
+            totients[prime * factor] /= prime;
+            totients[prime * factor] *= prime - 1;
+            factor += 1;
         }
     }
-
-    return product;
 }
 
