@@ -8,7 +8,7 @@
 namespace combinations {
 
     /* Efficiently calculates nCr using recursion and memoization to
-    avoid integers oveflow */
+       avoid integer oveflow */
 
     template<typename T>
     class nCr_Calculator {
@@ -22,11 +22,12 @@ namespace combinations {
 
 namespace primes {
 
-    /* Templated class to efficiently calculate Euler's totient function up to a given limit */
+    /* Templated class to efficiently calculate Euler's totient function
+       up to a given limit */
+
     template <typename T>
     class Phi {
         private:
-            std::set<T> primes;
             std::vector<T> totients;
         public:
             Phi(const T&);
@@ -88,6 +89,7 @@ primes::Phi<T>::Phi(const T& limit) {
         }
     }
 
+    std::set<T> primes;
     for (T i = 2; i <= limit; i++) {
         if (flags[i])
             primes.insert(i);
@@ -97,7 +99,8 @@ primes::Phi<T>::Phi(const T& limit) {
     for (T i = 0; i <= limit; i++)
         totients.push_back(i);
 
-    // now for each prime p, multiply the totient of each multiple of that prime by (p - 1) / p
+    // now for each prime p, multiply the totient of each multiple of that
+    // prime by (p - 1) / p
     for (auto prime : primes) {
         T factor = 1;
         while (prime * factor <= limit) {
