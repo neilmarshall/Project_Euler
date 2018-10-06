@@ -12,6 +12,8 @@ Find the value of n ≤ 1,000,000 for which n / phi(n) is a maximum.
 Solution: 510510
 */
 
+#include "../utilities/include/utilities.h"
+
 #include <cmath>
 
 #include <iostream>
@@ -19,20 +21,20 @@ Solution: 510510
 #include <vector>
 #include <set>
 
-class Phi {
-    private:
-        std::set<int> primes;
-
-    public:
-        Phi(const int&);
-        int operator () (int);
-};
+// class Phi {
+    // private:
+        // std::set<int> primes;
+// 
+    // public:
+        // Phi(const int&);
+        // int operator () (int);
+// };
 
 int main() {
 
     const int LIMIT = 1000000;
     
-    std::unique_ptr<Phi> phi(new Phi(LIMIT));
+    std::unique_ptr< primes::Phi<int> > phi(new primes::Phi<int>(LIMIT));
 
     std::pair<double, int> phiratio_max = std::make_pair(0., 0);
     std::pair<double, int> phiratio;
@@ -45,9 +47,9 @@ int main() {
     std::cout << "; n = " << phiratio_max.second << std::endl;
 }
 
+/*
 Phi::Phi(const int& limit) {
 
-    /* pre-populate primes up to limit */
 
     std::vector<bool> flags = {false, false};
     for (int i = 2; i <= limit; i++)
@@ -66,7 +68,6 @@ Phi::Phi(const int& limit) {
 
 int Phi::operator () (int n) {
 
-    /* return Phi(n) */
     
     if (primes.find(n) != primes.end())
         return n - 1;
@@ -81,3 +82,4 @@ int Phi::operator () (int n) {
 
     return static_cast<int>(n * product);
 }
+*/
