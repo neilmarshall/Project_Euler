@@ -108,3 +108,6 @@ venv.bak/
 **/*.out
 **/*.exe
 
+# swap files
+.*.swp
+
