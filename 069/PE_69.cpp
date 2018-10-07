@@ -21,15 +21,6 @@ Solution: 510510
 #include <vector>
 #include <set>
 
-// class Phi {
-    // private:
-        // std::set<int> primes;
-// 
-    // public:
-        // Phi(const int&);
-        // int operator () (int);
-// };
-
 int main() {
 
     const int LIMIT = 1000000;
@@ -47,39 +38,3 @@ int main() {
     std::cout << "; n = " << phiratio_max.second << std::endl;
 }
 
-/*
-Phi::Phi(const int& limit) {
-
-
-    std::vector<bool> flags = {false, false};
-    for (int i = 2; i <= limit; i++)
-        flags.push_back(true);
-    for (int i = 2; i <= limit / 2; i++) {
-        for (int j = 2; j <= limit / i; j++) {
-            flags[i * j] = false;
-        }
-    }
-    
-    for (int i = 2; i <= limit; i++) {
-        if (flags[i])
-            primes.insert(i);
-    }
-}
-
-int Phi::operator () (int n) {
-
-    
-    if (primes.find(n) != primes.end())
-        return n - 1;
-    
-    double product = 1;
-    for (auto prime : primes) {
-        if (prime > sqrt(n))
-            break;
-        if (n % prime == 0)
-            product *= 1 - 1. / prime;
-    }
-
-    return static_cast<int>(n * product);
-}
-*/
