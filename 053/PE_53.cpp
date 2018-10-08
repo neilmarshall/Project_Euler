@@ -16,7 +16,7 @@ than one-million?
 Solution: 4075
 */
 
-#include "../utilities/include/utilities.h"
+#include "utilities.h"
 
 #include <iostream>
 
