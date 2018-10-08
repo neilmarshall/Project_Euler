@@ -42,11 +42,11 @@ namespace primes {
     template <typename T>
     bool is_prime (const T&);
 
-    // template <typename T>
-    // std::vector<T> get_primes_under_n(const T&);
+    template <typename T>
+    std::vector<T> get_primes_under_n(const T&);
 
-    // template <typename T>
-    // std::vector<T> get_primes_up_to_n(const T&);
+    template <typename T>
+    std::vector<T> get_primes_up_to_n(const T&);
 
     // template <typename T>
     // std::vector get_prime_factors(const T&);
