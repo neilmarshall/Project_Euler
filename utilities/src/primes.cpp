@@ -94,3 +94,65 @@ template std::vector<unsigned int> primes::get_primes_up_to_n(const unsigned int
 template std::vector<unsigned long int> primes::get_primes_up_to_n(const unsigned long int&);
 template std::vector<unsigned long long int> primes::get_primes_up_to_n(const unsigned long long int&);
 
+template <typename T>
+std::vector<T> primes::get_prime_factors(T n) {
+
+    static_assert(std::is_integral<T>::value, "Type must be integral");
+
+    if (n <= 1) { return std::vector<T>(); }
+
+    std::vector<T> factors;
+    std::vector<T> primes = get_primes_up_to_n(static_cast<T>(sqrt(n)));
+    for (auto p : primes) {
+        while (n % p == 0) {
+            factors.push_back(p);
+            n /= p;
+        }
+    }
+
+    if (n > 1) { factors.push_back(n); }
+
+    return factors;
+}
+
+template std::vector<char> primes::get_prime_factors (char);
+template std::vector<char16_t> primes::get_prime_factors (char16_t);
+template std::vector<char32_t> primes::get_prime_factors (char32_t);
+template std::vector<wchar_t> primes::get_prime_factors (wchar_t);
+template std::vector<signed char> primes::get_prime_factors (signed char);
+template std::vector<short int> primes::get_prime_factors (short int);
+template std::vector<int> primes::get_prime_factors (int);
+template std::vector<long int> primes::get_prime_factors (long int);
+template std::vector<long long int> primes::get_prime_factors (long long int);
+template std::vector<unsigned char> primes::get_prime_factors (unsigned char);
+template std::vector<unsigned short int> primes::get_prime_factors (unsigned short int);
+template std::vector<unsigned int> primes::get_prime_factors (unsigned int);
+template std::vector<unsigned long int> primes::get_prime_factors (unsigned long int);
+template std::vector<unsigned long long int> primes::get_prime_factors (unsigned long long int);
+
+template <typename T>
+std::vector<T> primes::get_unique_prime_factors(T n) {
+
+    static_assert(std::is_integral<T>::value, "Type must be integral");
+
+    std::vector<T> factors = get_prime_factors(static_cast<T>(n));
+
+    factors.erase(std::unique(factors.begin(), factors.end()), factors.end());
+
+    return factors;
+}
+
+template std::vector<char> primes::get_unique_prime_factors (char);
+template std::vector<char16_t> primes::get_unique_prime_factors (char16_t);
+template std::vector<char32_t> primes::get_unique_prime_factors (char32_t);
+template std::vector<wchar_t> primes::get_unique_prime_factors (wchar_t);
+template std::vector<signed char> primes::get_unique_prime_factors (signed char);
+template std::vector<short int> primes::get_unique_prime_factors (short int);
+template std::vector<int> primes::get_unique_prime_factors (int);
+template std::vector<long int> primes::get_unique_prime_factors (long int);
+template std::vector<long long int> primes::get_unique_prime_factors (long long int);
+template std::vector<unsigned char> primes::get_unique_prime_factors (unsigned char);
+template std::vector<unsigned short int> primes::get_unique_prime_factors (unsigned short int);
+template std::vector<unsigned int> primes::get_unique_prime_factors (unsigned int);
+template std::vector<unsigned long int> primes::get_unique_prime_factors (unsigned long int);
+template std::vector<unsigned long long int> primes::get_unique_prime_factors (unsigned long long int);

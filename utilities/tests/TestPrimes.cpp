@@ -44,3 +44,33 @@ TEST(GetPrimesUpToN, ReturnsPrimesUpToAndIncludingInput) {
     ASSERT_THAT(get_primes_up_to_n(23), test_vec);
 }
 
+TEST(GetPrimeFactors, ReturnsEmptyVectorForInputLessThanOne) {
+    std::vector<int> test_vec;
+    ASSERT_THAT(get_prime_factors(1), test_vec);
+}
+
+TEST(GetPrimeFactors, ReturnsVectorOfOneElementForPrimeInput) {
+    std::vector<int> test_vec {13};
+    ASSERT_THAT(get_prime_factors(13), test_vec);
+}
+
+TEST(GetPrimeFactors, ReturnsVectorOfNonUniqueFactorsForCompoundInput) {
+    std::vector<int> test_vec {2, 2, 5, 5};
+    ASSERT_THAT(get_prime_factors(100), test_vec);
+}
+
+TEST(GetUniquePrimeFactors, ReturnsEmptyVectorForInputLessThanOne) {
+    std::vector<int> test_vec;
+    ASSERT_THAT(get_unique_prime_factors(1), test_vec);
+}
+
+TEST(GetUniquePrimeFactors, ReturnsVectorOfOneElementForPrimeInput) {
+    std::vector<int> test_vec {13};
+    ASSERT_THAT(get_unique_prime_factors(13), test_vec);
+}
+
+TEST(GetUniquePrimeFactors, ReturnsVectorOfUniqueFactorsForCompoundInput) {
+    std::vector<int> test_vec {2, 5};
+    ASSERT_THAT(get_unique_prime_factors(100), test_vec);
+}
+
