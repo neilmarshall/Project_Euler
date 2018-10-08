@@ -2,7 +2,6 @@
 #define UTILITIES_H
 
 #include <map>
-#include <set>
 #include <vector>
 
 namespace combinations {
@@ -39,6 +38,21 @@ namespace primes {
             Phi(const T&);
             T operator () (const T& n) { return totients[n]; };
     };
+
+    template <typename T>
+    bool is_prime (const T&);
+
+    // template <typename T>
+    // std::vector<T> get_primes_under_n(const T&);
+
+    // template <typename T>
+    // std::vector<T> get_primes_up_to_n(const T&);
+
+    // template <typename T>
+    // std::vector get_prime_factors(const T&);
+
+    // template <typename T>
+    // std::vector get_unique_prime_factors(const T&);
 }
 
 #endif // UTILITIES_H

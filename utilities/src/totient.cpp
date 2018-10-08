@@ -1,5 +1,7 @@
 #include "../include/utilities.h"
 
+#include <set>
+
 template <typename T>
 primes::Phi<T>::Phi(const T& limit) {
 
