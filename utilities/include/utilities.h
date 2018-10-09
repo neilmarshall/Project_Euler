@@ -67,7 +67,7 @@ namespace PythagoreanTriples {
          * Source: https://en.wikipedia.org/wiki/Tree_of_primitive_Pythagorean_triples
          */
 
-        static_assert(is_integral<T>::value, "Type must be integral");
+        static_assert(std::is_integral<T>::value, "Type must be integral");
 
         private:
             std::deque< std::tuple<T, T, T> > triples;
