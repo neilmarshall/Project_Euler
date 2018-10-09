@@ -45,3 +45,19 @@ TEST_F(GeneratePythagoreanTriples, Returns81517OnFourthCall) {
     ptg->GetNextTriple();
     ASSERT_THAT(ptg->GetNextTriple(), Eq(expected_value));
 }
+
+TEST_F(GeneratePythagoreanTriples, Calls567ReturnMatrixMultiplicationsOfCall2) {
+    std::vector< std::tuple<int, int, int> > expected_values(3);
+    expected_values[0] = std::make_tuple(7, 24, 25);
+    expected_values[1] = std::make_tuple(48, 55, 73);
+    expected_values[2] = std::make_tuple(28, 45, 53);
+    ptg->GetNextTriple();
+    ptg->GetNextTriple();
+    ptg->GetNextTriple();
+    ptg->GetNextTriple();
+    std::vector< std::tuple<int, int, int> > actual_values(3);
+    std::generate(actual_values.begin(), actual_values.end(),
+        [&](){ return ptg->GetNextTriple(); });
+    ASSERT_THAT(actual_values, Eq(expected_values));
+}
+

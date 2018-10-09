@@ -33,9 +33,9 @@ void PythagoreanTriples::PythagoreanTripleGenerator<T>::add_new_triples(T a, T b
     std::sort(elements.begin(), elements.end());
     triples.push_back(std::make_tuple(elements[0], elements[1], elements[2]));
 
-    // matrix multiplication using [[-1, 2, 2], [-2, 1, 3], [-2, 2, 3]]
+    // matrix multiplication using [[-1, 2, 2], [-2, 1, 2], [-2, 2, 3]]
     elements[0] = -a + 2 * b + 2 * c;
-    elements[1] = -2 * a + b + 3 * c;
+    elements[1] = -2 * a + b + 2 * c;
     elements[2] = -2 * a + 2 * b + 3 * c;
     std::sort(elements.begin(), elements.end());
     triples.push_back(std::make_tuple(elements[0], elements[1], elements[2]));
