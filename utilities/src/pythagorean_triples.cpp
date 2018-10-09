@@ -1,12 +1,12 @@
 #include "../include/utilties.h"
 
 template <typename T>
-PythagoreanTriples::PythagoreanTripleGenerator () {
+PythagoreanTriples::PythagoreanTripleGenerator<T>::PythagoreanTripleGenerator () {
     triples.push_back(std::make_tuple(3, 4, 5));
 }
 
 template <typename T>
-std::tuple<T, T, T> PythagoreanTriples::GetNextTriple() {
+std::tuple<T, T, T> PythagoreanTriples::PythagoreanTripleGenerator<T>::GetNextTriple() {
     auto next_triple = triples.front();
     triples.pop_front();
     int a, b, c;
@@ -16,7 +16,7 @@ std::tuple<T, T, T> PythagoreanTriples::GetNextTriple() {
 }
 
 template <typename T>
-void PythagoreanTriples::add_new_triples(T a, T b, T c) {
+void PythagoreanTriples::PythagoreanTripleGenerator<T>::add_new_triples(T a, T b, T c) {
     std::vector<T> elements(3);
 
     // matrix multiplication using [[1, -2, 2], [2, -1, 2], [2, -2, 3]]
