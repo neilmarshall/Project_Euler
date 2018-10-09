@@ -9,7 +9,7 @@ template <typename T>
 std::tuple<T, T, T> PythagoreanTriples::PythagoreanTripleGenerator<T>::GetNextTriple() {
     auto next_triple = triples.front();
     triples.pop_front();
-    int a, b, c;
+    T a, b, c;
     std::tie(a, b, c) = next_triple;
     add_new_triples(a, b, c);
     return next_triple;
