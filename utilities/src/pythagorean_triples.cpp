@@ -1,4 +1,4 @@
-#include "../include/utilties.h"
+#include "../include/utilities.h"
 
 template <typename T>
 PythagoreanTriples::PythagoreanTripleGenerator<T>::PythagoreanTripleGenerator () {
