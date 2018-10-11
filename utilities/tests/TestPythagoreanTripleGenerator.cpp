@@ -33,24 +33,24 @@ TEST_F(GeneratePythagoreanTriples, Returns51213OnSecondCall) {
     ASSERT_THAT(ptg->GetNextTriple(), Eq(expected_value));
 }
 
-TEST_F(GeneratePythagoreanTriples, Returns2021293OnThirdCall) {
-    auto expected_value = ituple(20, 21, 29);
-    ptg->GetNextTriple();
-    ptg->GetNextTriple();
-    ASSERT_THAT(ptg->GetNextTriple(), Eq(expected_value));
-}
-
-TEST_F(GeneratePythagoreanTriples, Returns81517OnFourthCall) {
+TEST_F(GeneratePythagoreanTriples, Returns81517OnThirdCall) {
     auto expected_value = ituple(8, 15, 17);
     ptg->GetNextTriple();
     ptg->GetNextTriple();
+    ASSERT_THAT(ptg->GetNextTriple(), Eq(expected_value));
+}
+
+TEST_F(GeneratePythagoreanTriples, Returns72425OnFourthCall) {
+    auto expected_value = ituple(7, 24, 25);
+    ptg->GetNextTriple();
+    ptg->GetNextTriple();
     ptg->GetNextTriple();
     ASSERT_THAT(ptg->GetNextTriple(), Eq(expected_value));
 }
 
-TEST_F(GeneratePythagoreanTriples, Calls567ReturnMatrixMultiplicationsOfCall2) {
+TEST_F(GeneratePythagoreanTriples, Calls567ReturnCorrectly) {
     std::vector< std::tuple<int, int, int> > expected_values {
-        ituple(7, 24, 25), ituple(48, 55, 73), ituple(28, 45, 53) };
+        ituple(20, 21, 29), ituple(12, 35, 37), ituple(9, 40, 41) };
     std::vector< std::tuple<int, int, int> > actual_values(7);
     std::generate(actual_values.begin(), actual_values.end(),
         [&](){ return ptg->GetNextTriple(); });

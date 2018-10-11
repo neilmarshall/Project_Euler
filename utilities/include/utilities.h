@@ -62,7 +62,7 @@ namespace PythagoreanTriples {
 
     struct pythagorean_triple_comparer {
         template <typename T>
-        bool operator () {
+        bool operator () (std::tuple<T, T, T> t1, std::tuple<T, T, T> t2) {
             return std::get<0>(t1) + std::get<1>(t1) + std::get<2>(t1) > std::get<0>(t2) + std::get<1>(t2) + std::get<2>(t2);
         }
     };
@@ -83,7 +83,8 @@ namespace PythagoreanTriples {
         static_assert(std::is_integral<T>::value, "Type must be integral");
 
         private:
-            std::priority_queue<std::tuple<T, T, T>, std::vector<std::tuple<T, T, T>, pythagorean_triple_comparer> triples;
+            std::priority_queue<std::tuple<T, T, T>, std::vector< std::tuple<T, T, T> >,
+                pythagorean_triple_comparer> triples;
             void add_new_triples(T, T, T);
 
         public:
