@@ -23,7 +23,7 @@ exactly one integer sided right angle triangle be formed?
 Solution: 161667
 */
 
-#include "../utilities/include/utilities.h"
+#include "utilities.h"
 
 #include <iostream>
 #include <map>
