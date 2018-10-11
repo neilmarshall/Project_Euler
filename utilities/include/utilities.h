@@ -1,8 +1,8 @@
 #ifndef UTILITIES_H
 #define UTILITIES_H
 
-#include <deque>
 #include <map>
+#include <queue>
 #include <tuple>
 #include <type_traits>
 #include <vector>
@@ -60,17 +60,30 @@ namespace primes {
 
 namespace PythagoreanTriples {
 
+    struct pythagorean_triple_comparer {
+        template <typename T>
+        bool operator () {
+            return std::get<0>(t1) + std::get<1>(t1) + std::get<2>(t1) > std::get<0>(t2) + std::get<1>(t2) + std::get<2>(t2);
+        }
+    };
+    
     template <typename T>
     class PythagoreanTripleGenerator {
         /*
          * Class that continuously generates distinct, primitive Pythagorean triples
+         *
          * Source: https://en.wikipedia.org/wiki/Tree_of_primitive_Pythagorean_triples
+         *
+         * The class stores triples in a priority queue; triples are stored from smallest to
+         * largest, where size is taken as the sum of the elements of the triple (so if
+         * the triple were considered to form a right-angled triangle then the "size" would
+         * be equal to the sum of the side lengths, i.e. the perimeter)
          */
 
         static_assert(std::is_integral<T>::value, "Type must be integral");
 
         private:
-            std::deque< std::tuple<T, T, T> > triples;
+            std::priority_queue<std::tuple<T, T, T>, std::vector<std::tuple<T, T, T>, pythagorean_triple_comparer> triples;
             void add_new_triples(T, T, T);
 
         public:
