@@ -1,7 +1,8 @@
 /*
-Euler's Totient function, φ(n) [sometimes called the phi function], is used to determine the
-number of positive numbers less than or equal to n which are relatively prime to n. For
-example, as 1, 2, 4, 5, 7, and 8, are all less than nine and relatively prime to nine, φ(9)=6.
+Euler's Totient function, φ(n) [sometimes called the phi function], is used to
+determine the number of positive numbers less than or equal to n which are
+relatively prime to n. For example, as 1, 2, 4, 5, 7, and 8, are all less than
+nine and relatively prime to nine, φ(9)=6. 
 
 The number 1 is considered to be relatively prime to every positive number, so φ(1)=1.
 
@@ -23,7 +24,7 @@ using namespace primes;
 
 bool is_permutation(const int& m, const int& n) {
     std::string s1 = std::to_string(m);
-    std::string s2 = std::to_string(m);
+    std::string s2 = std::to_string(n);
     if (s1.size() != s2.size()) { return false; }
     std::multiset<char> set1(s1.begin(), s1.end());
     std::multiset<char> set2(s2.begin(), s2.end());
@@ -39,9 +40,9 @@ int main () {
 
     std::unique_ptr< Phi<int> > phi(new Phi<int>(LIMIT));
     for (int n = 2; n < LIMIT; n++) {
-        int m = phi(n);
+        int m = (*phi)(n);
         if (is_permutation(m, n)) {
-            phiratio = std::make_pair(n / m, n);
+            phiratio = std::make_pair(static_cast<double>(n) / m, n);
             phiratio_min = std::min(phiratio_min, phiratio);
         }
     }
