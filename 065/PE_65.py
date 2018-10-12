@@ -34,20 +34,18 @@ def PE_65(problemlimit):
     272
     """
     
-    expansion_key = [2] + [1 for _ in range(problemlimit - 1)]
+    expansion = [2] + [1 for _ in range(problemlimit - 1)]
     for n in range(problemlimit):
         if (n + 1) % 3 == 0:
-            expansion_key[n] *= 2 * (n + 1) // 3
+            expansion[n] *= 2 * (n + 1) // 3
     
-    numerator = [0, 1]
-    denominator = [0, expansion_key[-1]]
-    for i in range(2, problemlimit):
-        numerator.append(denominator[i - 1])
-        denominator.append(numerator[i - 1] + expansion_key[-i] * denominator[i - 1])
+    numerator, denominator = 0, 1
+    for i in range(1, problemlimit):
+        numerator, denominator = denominator, numerator + denominator * expansion[-i]
     
-    numerator[0] = numerator[-1] + expansion_key[0] * denominator[-1]
+    numerator += denominator * expansion[0]
 
-    return sum(map(int, str(numerator[0])))
+    return sum(map(int, str(numerator)))
     
 
 if __name__ == '__main__':
