@@ -40,10 +40,10 @@ class PythagoreanTripleGenerator():
     def GetNextTriple(self):
         next_triple = heappop(self.triples);
         a, b, c = next_triple.a, next_triple.b, next_triple.c
-        self.add_new_triples(a, b, c)
+        self._add_new_triples(a, b, c)
         return a, b, c
 
-    def add_new_triples(self, a, b, c): 
+    def _add_new_triples(self, a, b, c): 
         # matrix multiplication using [[1, -2, 2], [2, -1, 2], [2, -2, 3]]
         elements = sorted((a - 2 * b + 2 * c, 2 * a - b + 2 * c, 2 * a - 2 * b + 3 * c))
         heappush(self.triples, Triple(*elements))
