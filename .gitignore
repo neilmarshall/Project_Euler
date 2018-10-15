@@ -111,3 +111,8 @@ venv.bak/
 # swap files
 .*.swp
 
+# compiled C files
+*.c
+
+# HTML files
+*.html
