@@ -1,5 +1,5 @@
 cpdef int digit_factorial_sum(int n):
-    cdef dict factorial = {0: 1, 1: 1, 2: 2, 3: 6, 4: 24, 5: 120, 6: 720, 7: 5040, 8: 40320, 9: 362880}
+    cdef int* factorial = [1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880]
     cdef int t = 0
     cdef int c
     while n >= 10:

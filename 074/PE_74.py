@@ -28,8 +28,6 @@ non-repeating terms?
 Solution: 402
 """
 
-import pyximport; pyximport.install(language_level=3)
-
 from chain_length import chain_length
 
 def PE_74():
