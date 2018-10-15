@@ -1,41 +1,38 @@
 #include "../include/utilities.h"
 
-#include <set>
-
 template <typename T>
 primes::Phi<T>::Phi(const T& limit) {
 
     /* constructor function - pre-populates primes totients up to limit so
        Euler's totient function can be efficiently checked */
 
-    // first generate primes
+    // generate prime flags
     std::vector<bool> flags = {false, false};
     for (T i = 2; i <= limit; i++)
         flags.push_back(true);
     for (T i = 2; i <= limit / 2; i++) {
-        for (T j = 2; j <= limit / i; j++) {
-            flags[i * j] = false;
+        if (flags[i]) {
+            for (T j = 2; j <= limit / i; j++) {
+                flags[i * j] = false;
+            }
         }
     }
 
-    std::set<T> primes;
-    for (T i = 2; i <= limit; i++) {
-        if (flags[i])
-            primes.insert(i);
-    }
+    // generate primes from prime flags
+    std::vector<T> primes;
+    for (T i = 2; i <= limit; i++)
+        if (flags[i]) { primes.push_back(i); }
 
-    // now pre-populate totients with each value of n up to limit
+    // pre-populate totients with each value of n up to limit
     for (T i = 0; i <= limit; i++)
         totients.push_back(i);
 
-    // now for each prime p, multiply the totient of each multiple of that
+    // for each prime p, multiply the totient of each multiple of that
     // prime by (p - 1) / p
     for (auto prime : primes) {
-        T factor = 1;
-        while (prime * factor <= limit) {
+        for (T factor = 1; factor <= limit / prime; factor++) {
             totients[prime * factor] /= prime;
             totients[prime * factor] *= prime - 1;
-            factor += 1;
         }
     }
 }
