@@ -1,3 +1,4 @@
+#! venv/bin/python3
 """
 The number 145 is well known for the property that the sum of the factorial of
 its digits is equal to 145:
@@ -27,21 +28,9 @@ non-repeating terms?
 Solution: 402
 """
 
-def digit_factorial_sum(n):
-    factorial = {'0': 1, '1': 1, '2': 2, '3': 6, '4': 24, '5': 120, '6': 720, '7': 5040, '8': 40320, '9': 362880}
-    return sum(factorial[c] for c in str(n))
+import pyximport; pyximport.install(language_level=3)
 
-
-def chain_length(n):
-    seen, chain = set((n,)), 1
-    while True:
-        n = digit_factorial_sum(n)
-        if n not in seen:
-            seen.add(n)
-            chain += 1
-        else:
-            return chain
-
+from chain_length import chain_length
 
 def PE_74():
     """
