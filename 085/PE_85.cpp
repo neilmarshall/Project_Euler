@@ -17,8 +17,8 @@ int count_subgrids(const int& width, const int& height) {
         for (int h = 1; h <= height; h++) {
             subgrid_count += (1 + width - w) * (1 + height - h);
         }
-	}
-        return subgrid_count;
+    }
+    return subgrid_count;
 }
 
 std::tuple<int, int> dimensions_of_grid_with_at_most_n_subgrids (const int& target) {
