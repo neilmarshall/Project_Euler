@@ -28,48 +28,7 @@ Solution: 402
 */
 
 #include <iostream>
-#include <set>
-
-class FactorialDigitSumChainCounter {
-    private:
-        constexpr static int factorial[] = {1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880};
-        int limit;
-        
-        static int digit_factorial_sum(int n) {
-            int t = 0;
-            while (n >= 10) {
-                t += factorial[n % 10];
-                n /= 10;
-            }
-            return t + factorial[n];
-        }
-        
-        static int get_chain_length(int n) {
-            int chain = 1;
-            std::set<int> seen;
-            while (true) {
-                n = digit_factorial_sum(n);
-                if (seen.find(n) == seen.end()) {
-                    seen.insert(n);
-                    chain += 1;
-                } else {
-                    break;
-                }
-            }
-            return chain;
-        }
-
-    public:
-        FactorialDigitSumChainCounter(int _limit) : limit(_limit) {}
-        
-        int CountChainsOfLength(int chain_length) {
-            int count = 0;
-            for (int n = 1; n < limit; n++) {
-                if (get_chain_length(n) == chain_length) { count += 1; }
-            }
-            return count;
-        }
-};
+#include "FactorialDigitSumChainCounter.h"
 
 int main() {
     FactorialDigitSumChainCounter factorial_digit_sum_chain_counter(1000000);
