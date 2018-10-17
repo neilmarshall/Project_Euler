@@ -1,4 +1,4 @@
-cpdef int digit_factorial_sum(int n):
+cdef int digit_factorial_sum(int n):
     cdef int* factorial = [1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880]
     cdef int t = 0
     cdef int c
