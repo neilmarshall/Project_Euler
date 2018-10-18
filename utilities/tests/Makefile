@@ -1,4 +1,4 @@
-OBJECTS = build/TestCombinations.o build/TestPrimes.o build/TestPythagoreanTripleGenerator.o build/TestTotient.o
+OBJECTS = build/*.o
 SOURCES = ../build/*.o
 
 CXX = clang++ -std=c++11 -Wall -W

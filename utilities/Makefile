@@ -1,4 +1,4 @@
-OBJECTS = build/combinations.o build/primes.o build/pythagorean_triples.o build/totient.o
+OBJECTS = build/*.o
 
 CXX = clang++ -std=c++11 -Wall -W
 
