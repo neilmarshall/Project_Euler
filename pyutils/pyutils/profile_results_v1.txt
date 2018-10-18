@@ -1,0 +1,18 @@
+[3J[H[2J         301029 function calls in 0.274 seconds
+
+   Ordered by: internal time
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+   181024    0.115    0.000    0.115    0.000 pythagorean_triples.py:17(__lt__)
+    10000    0.051    0.000    0.137    0.000 pythagorean_triples.py:46(_add_new_triples)
+    10000    0.037    0.000    0.120    0.000 {built-in method _heapq.heappop}
+    30000    0.020    0.000    0.052    0.000 {built-in method _heapq.heappush}
+    30001    0.018    0.000    0.018    0.000 pythagorean_triples.py:9(__init__)
+    30000    0.016    0.000    0.016    0.000 {built-in method builtins.sorted}
+    10000    0.010    0.000    0.267    0.000 pythagorean_triples.py:40(GetNextTriple)
+        1    0.007    0.007    0.274    0.274 <string>:1(<module>)
+        1    0.000    0.000    0.274    0.274 {built-in method builtins.exec}
+        1    0.000    0.000    0.000    0.000 pythagorean_triples.py:37(__init__)
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+
+
