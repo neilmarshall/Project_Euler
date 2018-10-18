@@ -1,22 +1,6 @@
-import functools
-
 from heapq import heappush, heappop
 
-@functools.total_ordering
-class Triple():
-    """Class that holds a Pythagorean triple,  allowing comparison of triples by perimeter"""
-
-    def __init__(self, a, b, c):
-        self.a = a
-        self.b = b
-        self.c = c
-
-    def __eq__(self, other):
-        return self.a + self.b + self.c == other.a + other.b + other.c
-
-    def __lt__(self, other):
-        return self.a + self.b + self.c < other.a + other.b + other.c
-
+from .c_pythagorean_triples import Triple
 
 class PythagoreanTripleGenerator():
     """
