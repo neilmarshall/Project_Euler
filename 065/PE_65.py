@@ -1,3 +1,4 @@
+#! venv/bin/python3
 """
 The square root of 2 can be written as an infinite continued fraction: √2 = [1;(2)], (2),
 where (2) indicates that 2 repeats ad infinitum. In a similar way, √23 = [4;(1,3,1,8)].
@@ -24,6 +25,7 @@ fraction for e.
 
 Solution: 272
 """
+from pyutils.sqrt_expansion import SqrtExpansion
 
 def PE_65(problemlimit):
     """
@@ -33,19 +35,14 @@ def PE_65(problemlimit):
     >>> PE_65(100)
     272
     """
-    
-    expansion = [2] + [1 for _ in range(problemlimit - 1)]
+    key = [_] + [1 for _ in range(problemlimit - 1)]
     for n in range(problemlimit):
         if (n + 1) % 3 == 0:
-            expansion[n] *= 2 * (n + 1) // 3
-    
-    numerator, denominator = 0, 1
-    for i in range(1, problemlimit):
-        numerator, denominator = denominator, numerator + denominator * expansion[-i]
-    
-    numerator += denominator * expansion[0]
+            key[n] *= 2 * (n + 1) // 3
 
-    return sum(map(int, str(numerator)))
+    expansion = SqrtExpansion(2, key[1:])
+    
+    return sum(map(int, str(expansion.get_nth_fraction(problemlimit).numerator)))
     
 
 if __name__ == '__main__':

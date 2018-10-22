@@ -5,6 +5,8 @@ class SqrtExpansion():
 
     def __init__(self, n, iterable=None):
         if iterable is None:
+            if int(n**0.5) * int(n**0.5) == n:
+                raise ValueError("Input to SqrtExpansion cannot be a square")
             self.root, self.key = self.get_root_and_key(n)
         else:
             self.root = n

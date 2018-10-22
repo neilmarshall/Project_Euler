@@ -53,3 +53,6 @@ class TestSqrtExpansion(unittest.TestCase):
     def test_string_representation_of_expansion_of_23(self):
         expansion = SqrtExpansion(23)
         self.assertEqual(str(expansion), "[4; (1, 3, 1, 8)]")
+
+    def test_throws_error_if_input_is_square(self):
+        self.assertRaises(ValueError, SqrtExpansion, 9)

@@ -1,4 +1,4 @@
-#! /usr/bin/env python3.6
+#! venv/bin/python3 
 """
 It is possible to show that the square root of two can be expressed as an
 infinite continued fraction:
@@ -21,19 +21,20 @@ with more digits than denominator?
 
 Solution: 153
 """
+from pyutils.sqrt_expansion import SqrtExpansion
 
 def PE_57(problemlimit):
     """
     >>> PE_57(1000)
     153
     """
+    sqrt_exp = SqrtExpansion(2)
     excess_digit_count = 0
-    numerator, denominator = 0, 1
-    for i in range(1, problemlimit):
-        numerator, denominator = denominator, numerator + denominator * 2
-        if len(str(numerator + denominator)) > len(str(denominator)):
+    for i in range(1, problemlimit + 1):
+        expansion = sqrt_exp.get_nth_fraction(i)
+        numerator, denominator = expansion.numerator, expansion.denominator
+        if len(str(numerator)) > len(str(denominator)):
             excess_digit_count += 1
-    
     return excess_digit_count
     
 
