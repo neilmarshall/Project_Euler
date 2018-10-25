@@ -109,7 +109,10 @@ std::vector<Rank> PokerHand::score_ranks(const HandType& hand_type) const {
     Rank four_rank, three_rank, two_rank, high_card;
     std::vector<Rank> high_cards, pair_ranks;
     switch (hand_type) {
-        case ROYALFLUSH: case STRAIGHTFLUSH: case FLUSH: case STRAIGHT: case HIGHCARD:
+        case ROYALFLUSH: case STRAIGHTFLUSH: case STRAIGHT:
+            scorer[0] = ranks[4];
+            break;
+        case FLUSH: case HIGHCARD:
             scorer[0] = ranks[4];
             scorer[1] = ranks[3];
             scorer[2] = ranks[2];

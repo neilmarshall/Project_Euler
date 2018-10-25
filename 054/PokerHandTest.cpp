@@ -27,13 +27,13 @@ class APokerHand : public Test {
 TEST_F(APokerHand, PrintsRoyalFlush) {
     std::stringstream ss;
     ss << royal_flush;
-    ASSERT_THAT(ss.str(), Eq("Royal Flush (Ace, King, Queen, Jack, Ten)"));
+    ASSERT_THAT(ss.str(), Eq("Royal Flush (Ace)"));
 }
 
 TEST_F(APokerHand, PrintsStraightFlush) {
     std::stringstream ss;
     ss << straight_flush;
-    ASSERT_THAT(ss.str(), Eq("Straight Flush (King, Queen, Jack, Ten, Nine)"));
+    ASSERT_THAT(ss.str(), Eq("Straight Flush (King)"));
 }
 
 TEST_F(APokerHand, PrintsFourOfAKind) {
@@ -54,11 +54,10 @@ TEST_F(APokerHand, PrintsFlush) {
     ASSERT_THAT(ss.str(), Eq("Flush (King, Queen, Jack, Ten, Six)"));
 }
 
-        PokerHand high_card = PokerHand("5D6S8H7C2S");
 TEST_F(APokerHand, PrintsStraight) {
     std::stringstream ss;
     ss << straight;
-    ASSERT_THAT(ss.str(), Eq("Straight (King, Queen, Jack, Ten, Nine)"));
+    ASSERT_THAT(ss.str(), Eq("Straight (King)"));
 }
 
 TEST_F(APokerHand, PrintsThreeOfAKind) {
