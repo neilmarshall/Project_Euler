@@ -4,8 +4,8 @@
 PokerHand::PokerHand(std::string input_string_) : input_string(input_string_) {
 
     // parse ranks and suits
-	this->parse_ranks();
-	this->parse_suits();
+    this->parse_ranks();
+    this->parse_suits();
 	
     // score hand
     hand_type = this->score_hand();
@@ -18,18 +18,17 @@ void PokerHand::parse_ranks() {
         {'5', FIVE}, {'6', SIX}, {'7', SEVEN}, {'8', EIGHT}, {'9', NINE},
         {'T', TEN}, {'J', JACK}, {'Q', QUEEN}, {'K', KING}, {'A', ACE} };
 
-	for (int i = 0; i < 5; ++i) { ranks.push_back(rank_map[input_string[2 * i]]); }
+    for (int i = 0; i < 5; ++i) { ranks.push_back(rank_map[input_string[2 * i]]); }
     std::sort(ranks.begin(), ranks.end());
 
     for (auto rank : ranks) {
-        rank_counts.insert(
-            std::make_pair(rank, std::count(ranks.begin(), ranks.end(), rank))); 
+        rank_counts.insert(std::make_pair(rank, std::count(ranks.begin(), ranks.end(), rank))); 
     }
 }
 
 /* load suits */
 void PokerHand::parse_suits() {
-	for (int i = 0; i < 5; ++i) { suits.push_back(input_string[2 * i + 1]); }
+    for (int i = 0; i < 5; ++i) { suits.push_back(input_string[2 * i + 1]); }
 }
 
 int rank_count_counter(const std::map<Rank, int>& rank_counts, int count) {
@@ -67,15 +66,15 @@ HandType PokerHand::score_hand() const {
 
 /* check if hand is a flush */
 bool PokerHand::is_flush() const {
-	for (int i = 0; i < 4; ++i)
-		if (suits[i] != suits[i + 1]) { return false; }
+    for (int i = 0; i < 4; ++i)
+        if (suits[i] != suits[i + 1]) { return false; }
     return true;
 }
 
 /* check if hand is a straight */
 bool PokerHand::is_straight() const {
-	for (int i = 0; i < 4; ++i)
-		if (ranks[i] != ranks[i + 1] - 1) { return false; }
+    for (int i = 0; i < 4; ++i)
+        if (ranks[i] != ranks[i + 1] - 1) { return false; }
     return true;
 }
 
