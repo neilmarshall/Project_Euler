@@ -1,24 +1,51 @@
 """Module containing functions to identify primes, generate primes, and
 factorize numbers into primes"""
 
-def is_prime(n):
+class PrimeError(Exception):
+    """Base class for exceptions raised by prime functions"""
+    pass
+
+
+def is_prime(n, known_primes=None):
     """
     Return primality of n
+
+    If a list of known primes is passed then these are checked as potential
+    factors, else all numbers from 2 up to the square root of n are checked.
+
+    A list of known primes should be passed in sorted order (this is not checked
+    for performance reasons, it is the user's responsibility to ensure primes
+    are passed in sorted order), but a PrimeError is thrown if the largest prime
+    is less than the square root of n.
 
     >>> is_prime(5)
     True
 
     >>> is_prime(6)
     False
+
+    >>> primes = [2, 3, 5]
+    >>> is_prime(17)
+    True
     """
     if n <= 1:
         return False
 
-    for p in range(2, int(n**0.5) + 1):
+    if known_primes is not None:
+        if known_primes[-1] < int(n**0.5):
+            error_msg = f"Known primes passed must be at least as great as "
+            error_msg += f"square root of n (max prime = {known_primes[-1]}, "
+            error_msg += f"square root of n = {int(n**0.5)})"
+            raise PrimeError(error_msg)
+        test_factors = (prime for prime in known_primes if prime <= int(n**0.5))
+    else:
+        test_factors = range(2, int(n**0.5) + 1)
+
+    for p in test_factors:
         if n % p == 0:
             return False
-
-    return True
+    else:
+        return True
 
 
 def get_primes_under_n(n):
