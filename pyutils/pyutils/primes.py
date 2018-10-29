@@ -60,8 +60,9 @@ def get_primes_under_n(n):
 
     flags = [False, False] + [True for _ in range(2, n + 1)]
     for p in range(2, n // 2 + 1):
-        for q in range(2, n // p + 1):
-            flags[p * q] = False
+        if flags[p]:
+            for q in range(2, n // p + 1):
+                flags[p * q] = False
 
     return [i for i, prime in enumerate(flags) if prime and i < n]
 
