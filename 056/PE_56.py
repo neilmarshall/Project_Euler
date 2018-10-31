@@ -7,23 +7,10 @@ def PE_56():
     maximal_digit_sum = 0
     for a in range(1, LIMIT + 1):
         for b in range(1, LIMIT + 1):
-            AexpB = exponentiate_string(a, b)  # return a**b as a string
+            print(a, b)
+            AexpB = NumberAsString(str(a))**NumberAsString(str(b))
             maximal_digit_sum = max(maximal_digit_sum, len(AexpB))
     return maximal_digit_sum
-
-
-def exponentiate_string(a, b):
-    """
-    >>> print(exponentiate_string(2, 2))
-    4
-    
-    >>> print(exponentiate_string(3, 4))
-    81
-    """
-    AexpB, a = NumberAsString(), NumberAsString(str(a))
-    for _ in range(b):
-        AexpB *= a
-    return AexpB
 
 
 class NumberAsString():
@@ -75,14 +62,22 @@ class NumberAsString():
             if multiplier != '0':
                 product = '0' * i
                 for multiplicand in RHS:
-                    n = int(multiplier) * int(multiplicand) + carry
-                    carry = n // BASE
-                    product = str(n % BASE) + product
+                    if multiplicand != '0':
+                        n = int(multiplier) * int(multiplicand) + carry
+                        carry = n // BASE
+                        product = str(n % BASE) + product
                 result += NumberAsString(product)
         if carry:
-            result = NumberAsString(carry + str(result))
+            result = NumberAsString(str(carry) + str(result))
+        return result
+
+    def __pow__(self, other):
+        result, power = NumberAsString("1"), NumberAsString()
+        while power != other:
+            power += NumberAsString("1")
+            result *= self
         return result
 
 
 if __name__ == '__main__':
-    import doctest; doctest.testmod()
+    import doctest; doctest.testmod(verbose=True)
