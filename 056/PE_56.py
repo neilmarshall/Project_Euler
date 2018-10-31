@@ -1,3 +1,14 @@
+#! venv/bin/python3.7
+"""
+A googol (10100) is a massive number: one followed by one-hundred zeros; 100100
+is almost unimaginably large: one followed by two-hundred zeros. Despite their
+size, the sum of the digits in each number is only 1.
+
+Considering natural numbers of the form, ab, where a, b < 100, what is the
+maximum digital sum?
+
+Solution: 972
+"""
 def PE_56():
     """
     >>> PE_56()  # doctest: +SKIP
@@ -9,7 +20,7 @@ def PE_56():
         for b in range(1, LIMIT + 1):
             print(a, b)
             AexpB = NumberAsString(str(a))**NumberAsString(str(b))
-            maximal_digit_sum = max(maximal_digit_sum, len(AexpB))
+            maximal_digit_sum = max(maximal_digit_sum, sum(int(digit) for digit in str(AexpB)))
     return maximal_digit_sum
 
 
