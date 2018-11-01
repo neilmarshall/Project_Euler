@@ -84,6 +84,10 @@ class NumberAsStringMulMethod(unittest.TestCase):
 
     def test_27_times_3_is_81(self):
         self.assertEqual(self.n27 * self.n3, NumberAsString("81"))
+    
+    def test_2_times_4096_is_8192_and_the_reverse_holds(self):
+        self.assertEqual(NumberAsString("2")*NumberAsString("4096"), NumberAsString("8192"))
+        self.assertEqual(NumberAsString("4096")*NumberAsString("2"), NumberAsString("8192"))
 
 class NumberAsStringPowMethod(unittest.TestCase):
     def setUp(self):
