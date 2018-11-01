@@ -93,6 +93,9 @@ class NumberAsStringPowMethod(unittest.TestCase):
     def test_3_raised_to_power_4_is_81(self):
         self.assertEqual(self.n3**self.n4, NumberAsString("81"))
 
+    def test_2_raised_to_power_51_calcualtes_correctly(self):
+        self.assertEqual(NumberAsString(str(2))**NumberAsString(str(51)), "2251799813685248")
+
 
 if __name__ == '__main__':
     unittest.main()
