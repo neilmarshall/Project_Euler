@@ -11,15 +11,15 @@ Solution: 972
 """
 def PE_56():
     """
-    >>> PE_56()  # doctest: +SKIP
+    >>> PE_56()
     972
     """
     LIMIT = 99
     maximal_digit_sum = 0
     for a in range(1, LIMIT + 1):
+        A, AexpB = NumberAsString(str(a)), NumberAsString("1")
         for b in range(1, LIMIT + 1):
-            print(a, b)
-            AexpB = NumberAsString(str(a))**NumberAsString(str(b))
+            AexpB *= A
             maximal_digit_sum = max(maximal_digit_sum, sum(int(digit) for digit in str(AexpB)))
     return maximal_digit_sum
 
