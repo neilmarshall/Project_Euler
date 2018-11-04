@@ -1,100 +1,64 @@
 #! venv/bin/python3.7
-"""
-A googol (10100) is a massive number: one followed by one-hundred zeros; 100100
-is almost unimaginably large: one followed by two-hundred zeros. Despite their
-size, the sum of the digits in each number is only 1.
+from itertools import zip_longest
 
-Considering natural numbers of the form, ab, where a, b < 100, what is the
-maximum digital sum?
-
-Solution: 972
-"""
 def PE_56():
     """
     >>> PE_56()
     972
     """
-    LIMIT = 99
     maximal_digit_sum = 0
-    for a in range(1, LIMIT + 1):
-        A, AexpB = NumberAsString(str(a)), NumberAsString("1")
-        for b in range(1, LIMIT + 1):
-            AexpB *= A
-            maximal_digit_sum = max(maximal_digit_sum, sum(int(digit) for digit in str(AexpB)))
+    for a in range(1, 100):
+        multiplicand = list(map(int, str(a)))
+        AexpB = [1]
+        for b in range(1, 100):
+            AexpB = array_multiplication(AexpB, multiplicand)
+            maximal_digit_sum = max(maximal_digit_sum, sum(AexpB))
     return maximal_digit_sum
 
 
-class NumberAsString():
-    def strip_leading_zeroes(self):
-        """Return a numer as a string with all leading zeros removed"""
-        if len(self) > 1:
-            while self.s[0] == '0':
-                self.s = self.s[1:]
-        return self
+def array_multiplication(arr1, arr2):
+    """
+    >>> array_multiplication([3], [3, 4, 5, 6])
+    [1, 0, 3, 6, 8]
 
-    def __init__(self, s=None):
-        if s is not None and type(s) is not str:
-            raise TypeError("Argument must be nil or a string")
-        self.s = s if s is not None else "0"
+    >>> array_multiplication([3, 4, 5, 6], [3])
+    [1, 0, 3, 6, 8]
 
-    def __str__(self):
-        return self.s
-
-    def __repr__(self):
-        return "NumberAsString('{0}')".format(self.s)
-
-    def __eq__(self, other):
-        return self.s == other.s
-
-    def __len__(self):
-        return len(self.s)
-
-    def __add__(self, other):
-        BASE = 10
-        LHS, RHS = self.s, other.s
-        while len(LHS) < len(RHS):
-            LHS = '0' + LHS
-        while len(RHS) < len(LHS):
-            RHS = '0' + RHS
-    
-        carry, result = 0, ""
-        for left, right in zip(reversed(LHS), reversed(RHS)):
-            n = int(left) + int(right) + carry
-            carry = n // BASE
-            result = str(n % BASE) + result
-        if carry != 0:
-            result = str(carry) + result
-
-        return NumberAsString(result)
-
-    def __mul__(self, other):
-        BASE = 10
-        LHS, RHS = self.s[::-1], other.s[::-1]
-        while len(LHS) < len(RHS):
-            LHS += '0'
-        while len(RHS) < len(LHS):
-            RHS += '0'
-
-        carry, result = 0, NumberAsString()
-        for i, multiplier in enumerate(LHS):
-            if multiplier != '0':
-                product = '0' * i
-                for multiplicand in RHS:
-                    n = int(multiplier) * int(multiplicand) + carry
-                    carry = n // BASE
-                    product = str(n % BASE) + product
-                result += NumberAsString(product)
+    >>> array_multiplication([1, 2, 3], [3, 4, 5, 6])
+    [4, 2, 5, 0, 8, 8]
+    """
+    multiplicand, multiplier = min(arr1, arr2, key=len), max(arr1, arr2, key=len)
+    product = []
+    for i, a in enumerate(reversed(multiplicand)):
+        out, carry = [0] * i, 0
+        for b in reversed(multiplier):
+            n = a * b + carry
+            out.append(n % 10)
+            carry = n // 10
         if carry:
-            result = NumberAsString(str(carry) + str(result))
-        return result.strip_leading_zeroes()
+            out.append(carry)
+        product = array_addition(product, out[::-1])
+    return product
 
-    def __pow__(self, other):
-        result, power = NumberAsString("1"), NumberAsString()
-        while power != other:
-            power += NumberAsString("1")
-            result *= self
-        return result
+
+def array_addition(arr1, arr2):
+    """
+    >>> array_addition([1, 2, 3], [3, 4, 5, 6])
+    [3, 5, 7, 9]
+
+    >>> array_addition([1, 0, 3, 6, 8], [6, 9, 1, 2, 0])
+    [7, 9, 4, 8, 8]
+
+    >>> array_addition([6, 9, 1, 2, 0], [1, 0, 3, 6, 8])
+    [7, 9, 4, 8, 8]
+    """
+    out, carry = [], 0
+    for a, b in zip_longest(reversed(arr1), reversed(arr2), fillvalue=0):
+        n = a + b + carry
+        out.append(n % 10)
+        carry = n // 10
+    return out[::-1]
 
 
 if __name__ == '__main__':
-    import doctest; doctest.testmod(verbose=True)
+    import doctest; doctest.testmod()
