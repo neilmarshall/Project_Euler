@@ -25,6 +25,13 @@ def PE_56():
 
 
 class NumberAsString():
+    def strip_leading_zeroes(self):
+        """Return a numer as a string with all leading zeros removed"""
+        if len(self) > 1:
+            while self.s[0] == '0':
+                self.s = self.s[1:]
+        return self
+
     def __init__(self, s=None):
         if s is not None and type(s) is not str:
             raise TypeError("Argument must be nil or a string")
@@ -73,14 +80,13 @@ class NumberAsString():
             if multiplier != '0':
                 product = '0' * i
                 for multiplicand in RHS:
-                    if multiplicand != '0':
-                        n = int(multiplier) * int(multiplicand) + carry
-                        carry = n // BASE
-                        product = str(n % BASE) + product
+                    n = int(multiplier) * int(multiplicand) + carry
+                    carry = n // BASE
+                    product = str(n % BASE) + product
                 result += NumberAsString(product)
         if carry:
             result = NumberAsString(str(carry) + str(result))
-        return result
+        return result.strip_leading_zeroes()
 
     def __pow__(self, other):
         result, power = NumberAsString("1"), NumberAsString()
