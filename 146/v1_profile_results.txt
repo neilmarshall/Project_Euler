@@ -1,0 +1,120 @@
+Sum: 1242490
+         530880 function calls (530875 primitive calls) in 2592.840 seconds
+
+   Ordered by: internal time
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+   327294 2591.768    0.008 2591.768    0.008 primes.py:9(is_prime)
+    12122    0.616    0.000 2592.396    0.214 PE_146.py:39(is_solution)
+    64680    0.257    0.000    0.257    0.000 PE_146.py:29(<listcomp>)
+        1    0.100    0.100 2592.838 2592.838 PE_146.py:17(PE_146)
+    11550    0.062    0.000    0.335    0.000 PE_146.py:26(get_mods)
+    45391    0.017    0.000    0.017    0.000 {method 'append' of 'list' objects}
+    66990    0.013    0.000    0.013    0.000 {built-in method builtins.all}
+     2310    0.007    0.000    0.342    0.000 PE_146.py:35(<listcomp>)
+       14    0.000    0.000    0.000    0.000 {built-in method posix.stat}
+        1    0.000    0.000    0.000    0.000 {built-in method posix.listdir}
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:914(get_data)
+        6    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:1356(find_spec)
+        1    0.000    0.000    0.000    0.000 {built-in method posix.getcwd}
+       33    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:56(_path_join)
+        1    0.000    0.000    0.000    0.000 {built-in method builtins.__build_class__}
+        2    0.000    0.000    0.000    0.000 {built-in method marshal.loads}
+       33    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:58(<listcomp>)
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:793(get_code)
+        2    0.000    0.000    0.000    0.000 {method 'read' of '_io.FileIO' objects}
+        2    0.000    0.000    0.001    0.000 <frozen importlib._bootstrap_external>:1240(_get_spec)
+        2    0.000    0.000    0.001    0.000 <frozen importlib._bootstrap>:882(_find_spec)
+      2/1    0.000    0.000    0.001    0.001 <frozen importlib._bootstrap>:978(_find_and_load)
+        4    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:271(cache_from_source)
+       37    0.000    0.000    0.000    0.000 {method 'join' of 'str' objects}
+       30    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:222(_verbose_message)
+        1    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:1190(_path_hooks)
+        1    0.000    0.000    0.000    0.000 {built-in method builtins.print}
+        1    0.000    0.000 2592.840 2592.840 PE_146.py:12(<module>)
+       70    0.000    0.000    0.000    0.000 {method 'rstrip' of 'str' objects}
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:663(_load_unlocked)
+       14    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:74(_path_stat)
+       12    0.000    0.000    0.000    0.000 {built-in method builtins.getattr}
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:157(_get_module_lock)
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:504(_init_module_attrs)
+      2/1    0.000    0.000    0.001    0.001 <frozen importlib._bootstrap>:948(_find_and_load_unlocked)
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:574(spec_from_file_location)
+        1    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:1404(_fill_cache)
+        6    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:84(_path_is_mode_type)
+        7    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:1203(_path_importer_cache)
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:103(release)
+       18    0.000    0.000    0.000    0.000 {method 'rpartition' of 'str' objects}
+      3/1    0.000    0.000 2592.840 2592.840 {built-in method builtins.exec}
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:576(module_from_spec)
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:438(_classify_pyc)
+       12    0.000    0.000    0.000    0.000 {built-in method builtins.hasattr}
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:318(__exit__)
+        6    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:51(_r_long)
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:722(exec_module)
+        1    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:1319(__init__)
+        3    0.000    0.000    0.000    0.000 {method 'extend' of 'list' objects}
+       10    0.000    0.000    0.000    0.000 {built-in method _imp.release_lock}
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:58(__init__)
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:78(acquire)
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:369(_get_cached)
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:523(_compile_bytecode)
+        4    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:403(cached)
+        1    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:1433(<setcomp>)
+        1    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:1445(path_hook_for_FileFinder)
+        1    0.000    0.000    0.000    0.000 primes.py:2(<module>)
+        9    0.000    0.000    0.000    0.000 {built-in method builtins.isinstance}
+        1    0.000    0.000    0.000    0.000 {built-in method _functools.reduce}
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:147(__enter__)
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:792(find_spec)
+        4    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:62(_path_split)
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:951(path_stats)
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:1351(_get_spec)
+        2    0.000    0.000    0.000    0.000 {method 'startswith' of 'str' objects}
+        2    0.000    0.000    0.000    0.000 {built-in method builtins.any}
+        6    0.000    0.000    0.000    0.000 {built-in method builtins.len}
+        1    0.000    0.000    0.000    0.000 {built-in method builtins.setattr}
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:35(_new_module)
+        6    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:36(_relax_case)
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:176(cb)
+      3/2    0.000    0.000    0.001    0.000 <frozen importlib._bootstrap>:211(_call_with_frames_removed)
+        8    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:321(<genexpr>)
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:369(__init__)
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:416(parent)
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:719(find_spec)
+        6    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:859(__exit__)
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:1009(_handle_fromlist)
+        5    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:93(_path_isfile)
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:401(_check_name_wrapper)
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:471(_validate_timestamp_pyc)
+        2    0.000    0.000    0.001    0.000 <frozen importlib._bootstrap_external>:1272(find_spec)
+        8    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:1325(<genexpr>)
+        6    0.000    0.000    0.000    0.000 {built-in method from_bytes}
+        2    0.000    0.000    0.000    0.000 {method 'endswith' of 'str' objects}
+        1    0.000    0.000    0.001    0.001 {built-in method builtins.__import__}
+        1    0.000    0.000    0.000    0.000 {built-in method _imp.is_builtin}
+        2    0.000    0.000    0.000    0.000 {built-in method _imp._fix_co_filename}
+        6    0.000    0.000    0.000    0.000 {built-in method posix.fspath}
+        4    0.000    0.000    0.000    0.000 {built-in method _thread.get_ident}
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:151(__exit__)
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:311(__enter__)
+        6    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:855(__enter__)
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:884(__init__)
+        4    0.000    0.000    0.000    0.000 {method 'get' of 'dict' objects}
+        6    0.000    0.000    0.000    0.000 {method 'lower' of 'str' objects}
+        1    0.000    0.000    0.000    0.000 {built-in method builtins.sum}
+       10    0.000    0.000    0.000    0.000 {built-in method _imp.acquire_lock}
+        4    0.000    0.000    0.000    0.000 {built-in method _thread.allocate_lock}
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:143(__init__)
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:307(__init__)
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:424(has_location)
+        5    0.000    0.000    0.000    0.000 PE_146.py:23(<lambda>)
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+        1    0.000    0.000    0.000    0.000 primes.py:4(PrimeError)
+        2    0.000    0.000    0.000    0.000 {built-in method _imp.is_frozen}
+        1    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:98(_path_isdir)
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:719(create_module)
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:909(get_filename)
+        1    0.000    0.000    0.000    0.000 __init__.py:1(<module>)
+
+
