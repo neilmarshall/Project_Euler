@@ -2,7 +2,7 @@ import unittest
 
 from pyutils.primes import *
 
-class TestIsPrimeWithoutPassingKnownPrimesAsArgument(unittest.TestCase):
+class TestIsPrime(unittest.TestCase):
 
     def test_is_prime_returns_false_for_zero(self):
         self.assertEqual(is_prime(0), False)
@@ -18,30 +18,6 @@ class TestIsPrimeWithoutPassingKnownPrimesAsArgument(unittest.TestCase):
 
     def test_is_prime_returns_false_for_compound_number(self):
         self.assertEqual(is_prime(15), False)
-
-
-class TestIsPrimeWithKnownPrimesPassedAsArgument(unittest.TestCase):
-
-    def setUp(self):
-        self.known_primes = [2, 3, 5]
-
-    def test_is_prime_returns_false_for_zero(self):
-        self.assertEqual(is_prime(0, self.known_primes), False)
-
-    def test_is_prime_returns_false_for_one(self):
-        self.assertEqual(is_prime(1, self.known_primes), False)
-
-    def test_is_prime_returns_true_for_two(self):
-        self.assertEqual(is_prime(2, self.known_primes), True)
-
-    def test_is_prime_returns_true_for_odd_prime(self):
-        self.assertEqual(is_prime(17, self.known_primes), True)
-
-    def test_is_prime_returns_false_for_compound_number(self):
-        self.assertEqual(is_prime(15, self.known_primes), False)
-
-    def test_is_prime_throws_error_if_insufficient_known_primes_passed(self):
-        self.assertRaises(PrimeError, is_prime, 40, self.known_primes)
 
 
 class TestGetPrimesUnderN(unittest.TestCase):
