@@ -1,4 +1,3 @@
-import unittest
 from math import floor, log
 
 def is_prime(n):
@@ -34,21 +33,3 @@ def miller_rabin_test(n):
             if all(a**(2**r * d) % n != n - 1 for r in range(0, s)):
                 return False
     return True
-
-
-class TestMillerRabin(unittest.TestCase):
-
-def test_miller_rabin_produces_primes_under_100(self):
-        miller_rabin_output = [n for n in range(100) if miller_rabin_test(n)]
-        primes_under_100 = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, \
-                            47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97]
-        self.assertEqual(miller_rabin_output, primes_under_100)
-
-    def test_miller_rabin_produces_sum_of_primes_under_1000(self):
-        miller_rabin_output = sum(n for n in range(1000) if miller_rabin_test(n))
-        sum_of_primes_under_1000 = sum(n for n in range(1000) if is_prime(n))
-        self.assertEqual(miller_rabin_output, sum_of_primes_under_1000)
-
-
-if __name__ == '__main__':
-    unittest.main()
