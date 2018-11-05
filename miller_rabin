@@ -21,10 +21,10 @@ def miller_rabin_test(n):
         return n == 2
     s, d = factorise_powers_of_two(n)
     for a in range(2, min(n - 1, floor(2 * log(n)**2)) + 1):
-        for r in range(0, s):
-            if a**d % n == 1 or a**(2**r * d) % n == n - 1:
-                return True
-    return False
+        if a**d % n != 1:
+            if all(a**(2**r * d) % n != n - 1 for r in range(0, s)):
+                return False
+    return True
 
 
 class TestMillerRabin(unittest.TestCase):
