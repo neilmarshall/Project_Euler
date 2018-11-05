@@ -60,4 +60,3 @@ class TestGetUniquePrimeFactors(unittest.TestCase):
 
     def test_get_unique_prime_factors_returns_all_factors_for_compound_number(self):
         self.assertEqual(get_unique_prime_factors(100), [2, 5])
-
