@@ -1,5 +1,3 @@
-from math import floor, log
-
 from pyutils.primes import get_primes_up_to_n
 
 class MillerRabin():
