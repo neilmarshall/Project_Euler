@@ -6,6 +6,7 @@ setup(
     version="0.7",
     packages=find_packages(),
     install_requires="Cython",
-    ext_modules=cythonize("pyutils/c_pythagorean_triples.pyx")
+    ext_modules=cythonize("pyutils/*.pyx"),
+    exclude=["tests"]
 )
 
