@@ -60,8 +60,12 @@ cdef class MillerRabin():
             witnesses = [2, 3, 5, 7, 11, 13]
         elif n < 341550071728321:
             witnesses = [2, 3, 5, 7, 11, 13, 17]
+        elif n < 3825123056546413051:
+            witnesses = [2, 3, 5, 7, 11, 13, 17, 19, 23]
+        elif n < 18446744073709551616:
+            witnesses = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37]
         else:
-            raise ValueError(f"Value of n^2 too high for n = {n}")
+            raise ValueError(f"Value of n too high for n = {n}")
 
         s, d = self._factorise_powers_of_two(n)
         for a in witnesses:
