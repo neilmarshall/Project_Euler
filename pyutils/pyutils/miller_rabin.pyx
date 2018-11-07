@@ -23,7 +23,7 @@ cdef class MillerRabin():
     def __init__(self):
         self.known = get_primes_up_to_n(5000)
 
-    cpdef bint is_prime(self, n):
+    cpdef bint is_prime(self, unsigned long long n):
         """
         Return primality of n
         
@@ -34,6 +34,7 @@ cdef class MillerRabin():
             return n == 2
 
         # perform trial division based on initial primes
+        cdef unsigned long long p
         for p in self.known:
             if n % p == 0:
                 return n == p
@@ -65,8 +66,9 @@ cdef class MillerRabin():
         elif n < 18446744073709551616:
             witnesses = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37]
         else:
-            raise ValueError(f"Value of n too high for n = {n}")
+            raise OverflowError(f"Value of n too high :: {n}")
 
+        cdef unsigned long long s, d, a
         s, d = self._factorise_powers_of_two(n)
         for a in witnesses:
             if pow(a, d, n) != 1:
@@ -77,7 +79,8 @@ cdef class MillerRabin():
                     return False
         return True
 
-    cdef _factorise_powers_of_two(self, n):
+    cdef (unsigned long long, unsigned long long) _factorise_powers_of_two(self, unsigned long long n):
+        cdef unsigned long long s, m, d
         s, m = 0, n - 1
         while m % 2 == 0:
             s += 1
