@@ -1,6 +1,6 @@
 from pyutils.primes import get_primes_up_to_n
 
-class MillerRabin():
+cdef class MillerRabin():
     """
     Miller-Rabin primality test
 
@@ -18,10 +18,12 @@ class MillerRabin():
     primes larger than 1,000,000 (trial division tested all primes up to 1,000,000
     in just over 6s; Miller-Rabin achieved the same in just under 6s).
     """
+    cdef readonly list known
+
     def __init__(self):
         self.known = get_primes_up_to_n(5000)
 
-    def is_prime(self, n):
+    cpdef bint is_prime(self, n):
         """
         Return primality of n
         
@@ -37,6 +39,7 @@ class MillerRabin():
                 return n == p
 
         # test compositeness using Miller-Rabin algorithm, with suitable witnesses
+        cdef list witnesses
         if n < 2047:
             witnesses = [2]
         elif n < 1373653:
@@ -57,15 +60,20 @@ class MillerRabin():
             witnesses = [2, 3, 5, 7, 11, 13]
         elif n < 341550071728321:
             witnesses = [2, 3, 5, 7, 11, 13, 17]
+        else:
+            raise ValueError(f"Value of n^2 too high for n = {n}")
 
         s, d = self._factorise_powers_of_two(n)
         for a in witnesses:
             if pow(a, d, n) != 1:
-                if all(pow(a, pow(2, r) * d, n) != n - 1 for r in range(s)):
+                for r in range(s):
+                    if pow(a, pow(2, r) * d, n) == n - 1:
+                        break
+                else:
                     return False
         return True
 
-    def _factorise_powers_of_two(self, n):
+    cdef _factorise_powers_of_two(self, n):
         s, m = 0, n - 1
         while m % 2 == 0:
             s += 1
