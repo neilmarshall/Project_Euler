@@ -12,17 +12,15 @@ Solution: 26033
 """
 from itertools import combinations, permutations
 
-from pyutils.primes import get_primes_up_to_n, is_prime, PrimeError
+from pyutils.miller_rabin import Miller_Rabin
 
-def all_concatenations_are_prime(iterable, primes):
+def all_concatenations_are_prime(iterable):
+    mr = Miller_Rabin()
     pairs = permutations(iterable, 2)
-    try:
-        for pair in pairs:
-            if not is_prime(int(''.join(map(str, pair))), primes):
-                return False
-        return True
-    except PrimeError:
-        return False
+    for pair in pairs:
+        if not mr.is_prime(int(''.join(map(str, pair)))):
+            return False
+    return True
 
 
 def get_next_layer(current_layer, primes, pairs):
@@ -50,7 +48,6 @@ def PE_60():
     quints = get_next_layer(quads, primes, pairs)
 
     return min(sum(quint) for quint in quints)
-
 
 
 if __name__ == '__main__':
