@@ -40,7 +40,6 @@ Using the numbers 1 to 10, and depending on arrangements, it is possible to form
 
 Solution: 6531031914842725
 """
-from collections import Counter
 from itertools import product
 
 def PE_68():
@@ -66,22 +65,26 @@ def PE_68():
                                     for j in range(1, 11):
                                         if j not in {a, b, c, d, e, f, g, h, i} and sum((a, b, c)) == sum((b, i, j)):
                                             strOutput = ''.join(map(str, (a, b, c, d, c, e, f, e, g, h, g, i, j, i, b)))
-                                            if not_a_permutation(strOutput, astrOutput):
+                                            if not_a_rotation(strOutput, astrOutput):
                                                 astrOutput.append(strOutput)
-    print(astrOutput)
     return int(astrOutput[-1])
 
 
-def not_a_permutation(string, known_strings):
+def not_a_rotation(string, known_strings):
     for known_string in known_strings:
-        if are_permutations(string, known_string):
+        if are_rotations(string, known_string):
             return False
     return True
 
 
-def are_permutations(string1, string2):
-    counter1, counter2 = Counter(string1), Counter(string2)
-    return counter1 == counter2 
+def are_rotations(string1, string2):
+    if len(string1) != len(string2):
+        return False
+    for _ in range(len(string1)):
+        string2 = string2[1:] + string2[0]
+        if string1 == string2:
+            return True
+    return False
 
 
 if __name__ == '__main__':
