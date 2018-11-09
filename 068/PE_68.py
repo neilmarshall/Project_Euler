@@ -1,3 +1,4 @@
+#! /usr/local/bin/python3.7
 """
 Consider the following "magic" 3-gon ring, filled with the numbers 1 to 6, and
 each line adding to nine.
@@ -40,7 +41,7 @@ Using the numbers 1 to 10, and depending on arrangements, it is possible to form
 
 Solution: 6531031914842725
 """
-from itertools import product
+from itertools import permutations
 
 def PE_68():
     """
@@ -53,33 +54,31 @@ def PE_68():
     >>> PE_68()
     6531031914842725
     """
-    astrOutput = []
-    for a, b, c in product(range(1, 11), repeat=3):
-        if a != b and a != c and b != c:
-            for e, d in product(range(1, 11), repeat=2):
-                if d not in {a, b, c} and e not in {a, b, c} and d != e and sum((a, b, c)) == sum((c, d, e)):
-                    for f, g in product(range(1, 11), repeat=2):
-                        if f not in {a, b, c, d, e} and g not in {a, b, c, d, e} and f != g and sum((a, b, c)) == sum((e, f, g)):
-                            for h, i in product(range(1, 11), repeat=2):
-                                if h not in {a, b, c, d, e, f, g} and i not in {a, b, c, d, e, f, g} and h != i and sum((a, b, c)) == sum((g, h, i)):
-                                    for j in range(1, 11):
-                                        if j not in {a, b, c, d, e, f, g, h, i} and sum((a, b, c)) == sum((b, i, j)):
-                                            strOutput = ''.join(map(str, (a, b, c, d, c, e, f, e, g, h, g, i, j, i, b)))
-                                            if not_a_rotation(strOutput, astrOutput):
-                                                astrOutput.append(strOutput)
-    return int(astrOutput[-1])
+    known_strings = []
+    base = set(range(1, 11))
+    for a, b, c in permutations(base, 3):
+        subtotal = a + b + c
+        for e, d in generate_next(base, (a, b, c), 2, subtotal - c):
+            for f, g in generate_next(base, (a, b, c, d, e), 2, subtotal - e):
+                for h, i in generate_next(base, (a, b, c, d, e, f, g), 2, subtotal - g):
+                    for (j,) in generate_next(base, (a, b, c, d, e, f, g, h, i), 1, subtotal - b - i):
+                        string = ''.join(map(str, (a, b, c, d, c, e, f, e, g, h, g, i, j, i, b)))
+                        if not_a_rotation(string, known_strings):
+                            known_strings.append(string)
+    return int(known_strings[-1])
+
+
+def generate_next(base, known, size, control_subtotal):
+    return (digits for digits in permutations(base - set(known), size)
+            if sum(digits) == control_subtotal)
 
 
 def not_a_rotation(string, known_strings):
-    for known_string in known_strings:
-        if are_rotations(string, known_string):
-            return False
-    return True
+    return not any(map(lambda known_string: are_rotations(string, known_string),
+                       known_strings))
 
 
 def are_rotations(string1, string2):
-    if len(string1) != len(string2):
-        return False
     for _ in range(len(string1)):
         string2 = string2[1:] + string2[0]
         if string1 == string2:
