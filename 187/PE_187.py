@@ -1,28 +1,29 @@
 """
+A composite is a number containing at least two prime factors. For
+example, 15 = 3 × 5; 9 = 3 × 3; 12 = 2 × 2 × 3.
 
---------------------------------------------
-A possible solution:
-    count += 0
-    for primes p in [2, ..., sqrt(limit)]:
-        for primes q in [p, ..., limit / 2]:
-            count += 1
-    return count
---------------------------------------------
+There are ten composites below thirty containing precisely two, not necessarily
+distinct, prime factors: 4, 6, 9, 10, 14, 15, 21, 22, 25, 26.
 
-If n has exactly 2 primes factors then n = p.q, where p and q are primes and p (WLOG) is
-less than or equal to sqrt(n).
+How many composite integers, n < 108, have precisely two, not necessarily
+distinct, prime factors?
 
-So check primes up to sqrt(n), and if one such prime p divides n then check that n is not equal
-to p.q.r, for q and r primes. That is, check that n // p has no prime divisors less than sqrt(n / p).
+Notes:
+    If n has exactly 2 primes factors then n = p.q, where p and q are primes
+    and p (WLOG) is less than or equal to sqrt(n). q will then be a prime in
+    the range [p, ..., n / p].
 
-Pseucode algorithm:
-    count = 0
-    primes = generate_primes(sqrt(limit))
-    for n in [1, ..., limit]:
-        if n % p == 0 for some p in primes less than sqrt(n):
-            if (n // p) % q !=0 for all q in primes less than sqrt(n // p):
+    So for prime up to sqrt(n), there will be as many numbers with exactly two
+    prime factors as there are primes in the range [p, ..., n / p].
+
+    Pseudocode algorithm:
+        count = 0
+        for primes p in [2, ..., sqrt(limit)]:
+            for primes q in [p, ..., limit / 2]:
                 count += 1
-    return count
+        return count
+
+Solution: 17427258
 """
 def get_primes_up_to_n(n):
     flags = [False, False] + [True for _ in range(2, n + 1)]
@@ -37,20 +38,19 @@ def PE_187(limit):
     """
     >>> PE_187(30)
     10
+
+    >>> PE_187(10**8)
+    17427258
     """
     count = 0
-    primes = get_primes_up_to_n(int(limit**0.5))
-    def first_divisor(n):
-        for p in primes:
-            if p > int(n**0.5):
-                return 0
-            if n % p == 0:
-                return p
-    for n in range(4, limit + 1):
-        p = first_divisor(n)
-        if p:
-            if first_divisor(n // p) == 0:
-                count += 1
+    primes = get_primes_up_to_n(limit // 2)
+    for i, p in enumerate(primes):
+        if p > int(limit**0.5):
+            break
+        for q in primes[i:]:
+            if p * q > limit:
+                break
+            count += 1
     return count
     
 
