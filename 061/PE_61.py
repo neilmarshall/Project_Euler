@@ -52,14 +52,14 @@ octagonals = map(lambda x: make_node(x, 'oct'), generate_sequence(lambda n: n * 
 
 all_nodes = list(chain(triangles, squares, pentagonals, hexagonals, heptagonals, octagonals))
 
-def test_deque(lst, used_states):
+def test_starting_node(lst, used_states):
     if len(lst) == 6:
         return lst[0][0] == lst[-1][1]
     a, b, c = lst[-1]
     for x, y, z in all_nodes:
         if x == b and z not in used_states:
             lst.append((x, y, z))
-            if test_deque(lst, used_states | set((z,))):
+            if test_starting_node(lst, used_states | set((z,))):
                 return True
             else:
                 lst.pop()
@@ -69,4 +69,4 @@ def test_deque(lst, used_states):
 if __name__ == '__main__':
     import pdb; pdb.set_trace()
     lst = [all_nodes[0]]
-    test_deque(lst, set((all_nodes[0][-1],)))
+    test_starting_node(lst, set((all_nodes[0][-1],)))
