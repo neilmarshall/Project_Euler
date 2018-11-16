@@ -37,11 +37,8 @@ def generate_sequence(generator, start, end):
     return sequence
 
 
-class Node():
-    def __init__(self, n, form):
-        self.front = int(str(n)[:2])
-        self.back = int(str(n)[2:])
-        self.form = form
+def make_node(n, form):
+    return (str(n)[:2], str(n)[2:], form)
 
 
 triangles = map(lambda x: Node(x, 'tri'), generate_sequence(lambda n: n * (n + 1) // 2, 1000, 9999))
