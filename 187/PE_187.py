@@ -1,3 +1,4 @@
+#! /usr/local/bin/python3.7
 """
 A composite is a number containing at least two prime factors. For
 example, 15 = 3 × 5; 9 = 3 × 3; 12 = 2 × 2 × 3.

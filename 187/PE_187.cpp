@@ -37,11 +37,12 @@ using namespace primes;
 int PE_187(const int limit) {
     int count = 0;
     auto primes = get_primes_up_to_n(limit / 2);
-    for (int i = 0; i < primes.length(); i++) {
-        if (primes[i] > static_cast<int>(sqrt(limit)) { break; }
-        for (int j = i; j < primes.length(); j++) {
+    for (int i = 0; i < primes.size(); i++) {
+        if (primes[i] > static_cast<int>(sqrt(limit))) { break; }
+        for (int j = i; j < primes.size(); j++) {
             if (primes[i] * primes[j] > limit) { break; }
             count += 1;
+        }
     }
     return count;
 }
