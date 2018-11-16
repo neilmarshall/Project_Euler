@@ -28,35 +28,21 @@ def PE_187(limit):
     >>> PE_187(30)
     10
     """
-    primes_up_to_root_of_limit = get_primes_up_to_n(int(limit**0.5))
-    primes_up_to_root_of_limit_over_2 = get_primes_up_to_n(int((limit / 2)**0.5))
     count = 0
-    def has_one_factor_below_root_of_limit(n):
-        result = False
-        for p in primes_up_to_root_of_limit:
+    primes = get_primes_up_to_n(int(limit**0.5))
+    def first_divisor(n):
+        for p in primes:
             if p > int(n**0.5):
-                return False
-            if n % p == 0 and not result:
-                result = True
-            if n % p == 0 and result:
-                return False
-        return result
-    def has_one_factor_below_root_of_limit_over_2(n):
-        result = False
-        for p in primes_up_to_root_of_limit_over_2:
-            if p > int(n**0.5):
-                return False
-            if n % p == 0 and not result:
-                result = True
-            if n % p == 0 and result:
-                return False
-        return result
+                return 0
+            if n % p == 0:
+                return p
     for n in range(4, limit + 1):
-        if has_one_factor_below_root_of_limit(n):
-            if not has_one_factor_below_root_of_limit_over_2(n // p):
+        p = first_divisor(n)
+        if p:
+            if first_divisor(n // p) == 0:
                 count += 1
     return count
-
+    
 
 if __name__ == '__main__':
-    import doctest; doctest.testmod()
+    import doctest; doctest.testmod(verbose=True)
