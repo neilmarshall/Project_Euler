@@ -1,4 +1,14 @@
 """
+
+--------------------------------------------
+A possible solution:
+    count += 0
+    for primes p in [2, ..., sqrt(limit)]:
+        for primes q in [p, ..., limit / 2]:
+            count += 1
+    return count
+--------------------------------------------
+
 If n has exactly 2 primes factors then n = p.q, where p and q are primes and p (WLOG) is
 less than or equal to sqrt(n).
 
