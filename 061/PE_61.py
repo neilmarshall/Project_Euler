@@ -25,6 +25,7 @@ octagonal, is represented by a different number in the set.
 
 Solution: 28684
 """
+from itertools import chain
 
 def generate_sequence(generator, start, end):
     sequence, n, t = [], 0, 0
@@ -36,9 +37,20 @@ def generate_sequence(generator, start, end):
     return sequence
 
 
-print("Triangles:", len(generate_sequence(lambda n: n * (n + 1) // 2, 1000, 9999)))
-print("Squares:", len(generate_sequence(lambda n: n * n, 1000, 9999)))
-print("Pentagonals:", len(generate_sequence(lambda n: n * (3 * n - 1) // 2, 1000, 9999)))
-print("Hexagonals:", len(generate_sequence(lambda n: n * (2 * n - 1), 1000, 9999)))
-print("Heptagonals:", len(generate_sequence(lambda n: n * (5 * n - 3) // 2, 1000, 9999)))
-print("Octagonals:", len(generate_sequence(lambda n: n * (3 * n - 2), 1000, 9999)))
+class Node():
+    def __init__(self, n, form):
+        self.front = int(str(n)[:2])
+        self.back = int(str(n)[2:])
+        self.form = form
+
+
+triangles = map(lambda x: Node(x, 'tri'), generate_sequence(lambda n: n * (n + 1) // 2, 1000, 9999))
+squares = map(lambda x: Node(x, 'sqa'), generate_sequence(lambda n: n * n, 1000, 9999))
+pentagonals = map(lambda x: Node(x, 'pen'), generate_sequence(lambda n: n * (3 * n - 1) // 2, 1000, 9999))
+hexagonals = map(lambda x: Node(x, 'hex'), generate_sequence(lambda n: n * (2 * n - 1), 1000, 9999))
+heptagonals = map(lambda x: Node(x, 'hep'), generate_sequence(lambda n: n * (5 * n - 3) // 2, 1000, 9999))
+octagonals = map(lambda x: Node(x, 'oct'), generate_sequence(lambda n: n * (3 * n - 2), 1000, 9999))
+
+
+all_nodes = list(chain(triangles, squares, pentagonals, hexagonals, heptagonals, octagonals))
+print(len(all_nodes))
