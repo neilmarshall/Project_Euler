@@ -103,10 +103,11 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-# binary C++ files
+# binary files
 **/main
 **/*.out
 **/*.exe
+**/*.dll
 
 # swap files
 .*.swp
