@@ -43,8 +43,10 @@ std::vector<T> primes::get_primes_under_n(const T& n) {
        flags.push_back(true);
     }
     for (T p = 2; p <= n / 2; p++) {
-        for (T q = 2; q <= n / p; q++) {
-            flags[p * q] = false;
+        if (flags[p]) {
+            for (T q = 2; q <= n / p; q++) {
+                flags[p * q] = false;
+            }
         }
     }
 
