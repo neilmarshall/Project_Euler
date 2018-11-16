@@ -67,4 +67,6 @@ def test_deque(dq):
 
 if __name__ == '__main__':
     import pdb; pdb.set_trace()
-    test_deque(all_nodes[0])
+    dq = deque()
+    dq.append(all_nodes[0])
+    test_deque(dq)
