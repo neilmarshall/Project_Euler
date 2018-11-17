@@ -56,3 +56,18 @@ class TestSqrtExpansion(unittest.TestCase):
 
     def test_throws_error_if_input_is_square(self):
         self.assertRaises(ValueError, SqrtExpansion, 9)
+
+    def test_period_property(self):
+        expansion = SqrtExpansion(23)
+        self.assertEqual(expansion.period, 4)
+
+    def test_coefficient_calls_correct_element_of_key(self):
+        expansion = SqrtExpansion(23)
+        self.assertEqual(expansion.coefficient(0), 1)
+        self.assertEqual(expansion.coefficient(1), 3)
+        self.assertEqual(expansion.coefficient(2), 1)
+        self.assertEqual(expansion.coefficient(3), 8)
+        self.assertEqual(expansion.coefficient(4), 1)
+        self.assertEqual(expansion.coefficient(5), 3)
+        self.assertEqual(expansion.coefficient(6), 1)
+        self.assertEqual(expansion.coefficient(7), 8)

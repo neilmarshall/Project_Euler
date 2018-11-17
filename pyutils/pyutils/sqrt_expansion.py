@@ -38,3 +38,12 @@ class SqrtExpansion():
         for exp in reversed(expansion[:n - 1]):
             numerator, denominator = denominator, numerator + denominator * exp
         return Fraction(self.root, 1) + Fraction(numerator, denominator)
+
+    @property
+    def period(self):
+        """Return length of key"""
+        return len(self.key)
+
+    def coefficient(self, n):
+        """Return nth element of key, allowing repeats where n > period"""
+        return self.key[n % self.period]
