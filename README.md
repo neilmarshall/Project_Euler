@@ -22,7 +22,7 @@ Solutions to solved problems from https://projecteuler.net
 ### Examples
 
     fix (utilities): Fix bug in is_prime() method
-    style(142): Improve clarity of variable naming
+    style (142): Improve clarity of variable naming
     feat (142): Add solution to problem 142
 
 Source: http://karma-runner.github.io/0.10/dev/git-commit-msg.html
