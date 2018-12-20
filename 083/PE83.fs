@@ -39,29 +39,40 @@
 module Djikstra =
 
     type Node = Node of int * int
-    
+
+    /// convert list of distances (indexed by position) to map of
+    /// distances indexed by Node
+    let graphAsMap =
+        List.mapi (fun i x -> List.mapi (fun j y -> (Node(i + 1, j + 1), float y)) x)
+        >> List.concat
+        >> Map.ofList
+
+    /// return map of <Node, distance>, where distance is infinity for all
+    /// nodes except startNode, where distance is taken from graph
     let generateInitialDistances startNode n graph =
         [for x in [1..n] -> [for y in [1..n] -> (Node(x, y), infinity)]]
         |> List.concat
         |> Map.ofList
         |> Map.add startNode (Map.find startNode graph)
 
+    /// return set of unvisited nodes, which will initially be all
+    /// nodes except startNode
     let generateInitialUnvisitedNodes startNode n =
         [for i in [1..n] -> [for j in [1..n] -> Node(i, j)]]
         |> List.concat
         |> Set.ofList
         |> Set.remove startNode
 
-    let graphAsMap =
-        List.mapi (fun i x -> List.mapi (fun j y -> (Node(i + 1, j + 1), float y)) x)
-        >> List.concat
-        >> Map.ofList
-
+    /// return set of unvisited neighbours for a given node, which
+    /// will be all nodes that lie above, below, to the left or to
+    /// the right of the given node
     let getUnvisitedNeighbours unvisitedNodes (Node (x, y)) =
         let isNeighbour (Node(i, j)) =
             (abs(x - i) = 1 && y = j) || (abs(y - j) = 1 && x = i)
         Set.filter isNeighbour unvisitedNodes
 
+    /// update the <Node, distance> map to add the distance betwen
+    /// the current node and all of its (unvisited) neighbours
     let updateDistances graph currentNode distances nodesToUpdate =
         let updateDistance distances node =
             let currentDistance = Map.find node distances
@@ -70,11 +81,13 @@ module Djikstra =
             distances |> Map.add node newDistance
         nodesToUpdate |> Set.fold updateDistance distances
 
+    /// identify next node to visit as unvisited node with minimum distance
     let getNextNode unvisitedNodes distances =
         unvisitedNodes
         |> Set.toList
         |> List.minBy (fun node -> Map.find node distances)
 
+    /// recursive function to solve problem
     let rec recursiveSolve graph currentNode endNode distances unvisitedNodes =
         if unvisitedNodes |> Set.contains endNode then
             let unvisitedNeighbours =
@@ -84,8 +97,9 @@ module Djikstra =
             let unvisitedNodes = Set.remove nextNode unvisitedNodes
             recursiveSolve graph nextNode endNode distances unvisitedNodes
         else
-            Map.find endNode distances
+            Map.find endNode distances |> int
 
+    /// entry function to set up bindings and call recursive solution
     let solve graph =
         let n = List.length graph
         let startNode, endNode = Node(1, 1), Node(n, n)
@@ -106,5 +120,5 @@ module PE83 =
                      [537; 699; 497; 121; 956];
                      [805; 732; 524; 37; 331]]
 
-        printfn "%A" (Djikstra.solve graph)
+        printfn "%d" (Djikstra.solve graph)  // should return 2297
         0  // return code
