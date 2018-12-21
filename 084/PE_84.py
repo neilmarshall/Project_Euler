@@ -104,7 +104,7 @@ class Square(IntEnum):
 
 
 class MonopolyModeller():
-    """Models likelihood of landing of squares in a standard game of Monopoly"""
+    """Models likelihood of landing on squares in a standard game of Monopoly"""
 
     def __init__(self, die_size):
         """Initialise modeller"""
