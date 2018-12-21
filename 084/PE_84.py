@@ -50,12 +50,58 @@ Statistically it can be shown that the three most popular squares, in order, are
 JAIL (6.24%) = Square 10, E3 (3.18%) = Square 24, and GO (3.09%) = Square 00. So
 these three most popular squares can be listed with the six-digit modal string: 102400.
 
-If, instead of using two 6-sided dice, two 4-sided dice are used, find the six-digit modal string.
+If, instead of using two 6-sided dice, two 4-sided dice are used, find the six-digit
+modal string.
 
 Solution: 101524
 """
 import random
 from collections import Counter
+from enum import IntEnum, auto, unique
+
+@unique
+class Square(IntEnum):
+    GO = 0
+    OLD_KENT_ROAD = auto()
+    COMMUNITY_CHEST_1 = auto()
+    WHITECHAPEL_ROAD = auto()
+    INCOME_TAX = auto()
+    KINGS_CROSS_STATION = auto()
+    ANGEL_ISLINGTON = auto()
+    CHANCE_1 = auto()
+    EUSTON_ROAD = auto()
+    PENTONVILLE_ROAD = auto()
+    IN_JAIL = auto()
+    PALL_MALL = auto()
+    ELECTRIC_COMPANY = auto()
+    WHITEHALL = auto()
+    NORTHUMBERLAND_AVENUE = auto()
+    MARYLEBONE_STATION = auto()
+    BOW_STREET = auto()
+    COMMUNITY_CHEST_2 = auto()
+    MARLBOROUGH_STREET = auto()
+    VINE_STREET = auto()
+    FREE_PARKING = auto()
+    STRAND = auto()
+    CHANCE_2 = auto()
+    FLEET_STREET = auto()
+    TRAFALGAR_SQUARE = auto()
+    FENCHURCH_STREET_STATION = auto()
+    LEICESTER_SQUARE = auto()
+    COVENTRY_STREET = auto()
+    WATERWORKS = auto()
+    PICADILLY_CIRCUS = auto()
+    GO_TO_JAIL = auto()
+    REGENT_STREET = auto()
+    OXFORD_STREET = auto()
+    COMMUNITY_CHEST_3 = auto()
+    BOND_STREET = auto()
+    LIVERPOOL_STREET_STATION = auto()
+    CHANCE_3 = auto()
+    PARK_LANE = auto()
+    SUPER_TAX = auto()
+    MAYFAIR = auto()
+
 
 class MonopolyModeller():
     """
@@ -67,11 +113,12 @@ class MonopolyModeller():
     >>> model.run_model(seed=1)
     '101524'
     """
+
     def __init__(self, die_size):
         """Initialise modeller"""
         self.die_size = die_size
         self.cell_counter = Counter()
-        self.current_cell = 0
+        self.current_cell = Square.GO
         self.double_roll_count = 0
 
     def run_model(self, turn_limit=10000000, seed=None):
@@ -81,7 +128,7 @@ class MonopolyModeller():
         if seed is not None:
             random.seed(seed)
 
-        # basic game mechanics
+        # basic game mechanics - roll, move, and record landing square
         for _ in range(turn_limit):
             roll, is_double_roll = self._roll_dice()
             self._move(roll, is_double_roll)
@@ -117,30 +164,38 @@ class MonopolyModeller():
         """Check if landing on a square triggers a jump to different square"""
         
         # allow for "Go To Jail"
-        if self.current_cell == 30:
-            return 10
+        if self.current_cell == Square.GO_TO_JAIL:
+            return Square.IN_JAIL
     
         # allow for Community Chest cards
-        if self.current_cell in {2, 17, 33}:
+        if self._on_community_chest():
             return self._community_chest()
     
         # allow for Chance cards
-        if self.current_cell in {7, 22, 36}:
+        if self._on_chance():
             return self._chance()
 
         return self.current_cell
+
+    def _on_community_chest(self):
+        return self.current_cell in {Square.COMMUNITY_CHEST_1,
+            Square.COMMUNITY_CHEST_2, Square.COMMUNITY_CHEST_3}
+
+    def _on_chance(self):
+        return self.current_cell in {Square.CHANCE_1, Square.CHANCE_2,
+            Square.CHANCE_3}
 
     def _community_chest(self):
         """Allow for Community Chest cards"""
         random_community_chest_card = random.random()      
         
-        # "Advance To Go"
+        # Advance To Go
         if random_community_chest_card <= 0.0625:
-            return 0
+            return Square.GO
         
-        # "Go To Jail"
+        # Go To Jail
         if random_community_chest_card <= 2 * 0.0625:
-            return 10
+            return Square.IN_JAIL
         
         return self.current_cell
 
@@ -148,51 +203,56 @@ class MonopolyModeller():
         """Allow for Chance cards"""
         random_chance_card = random.random()
         
-        # "Advance To Go"
+        # Advance To Go
         if random_chance_card <= 0.0625:
-            return 0
+            return Square.GO
         
-        # "Go To Jail"
+        # Go To Jail
         if random_chance_card <= 2 * 0.0625:
-            return 10
+            return Square.IN_JAIL
         
-        # Go To C1
+        # Go To Pall Mall
         if random_chance_card <= 3 * 0.0625:
-            return 11
+            return Square.PALL_MALL
         
-        # Go to E3
+        # Go to Trafalgar Square
         if random_chance_card <= 4 * 0.0625:
-            return 24
+            return Square.TRAFALGAR_SQUARE
         
-        # Go to H2
+        # Go to Mayfair
         if random_chance_card <= 5 * 0.0625:
-            return 39
+            return Square.MAYFAIR
         
-        # Go to R1
+        # Go to King's Cross Station
         if random_chance_card <= 6 * 0.0625:
-            return 5
+            return Square.KINGS_CROSS_STATION
         
         # Go back 3 squares
         if random_chance_card <= 7 * 0.0625:
             return self.current_cell - 3
         
-        # Go to next U (utility company)
+        # Go to next utility company
         if random_chance_card <= 8 * 0.0625:
-            if self.current_cell < 12 or self.current_cell > 28:
-                return 12
+            if (self.current_cell < Square.ELECTRIC_COMPANY or
+                self.current_cell > Square.WATERWORKS):
+                return Square.ELECTRIC_COMPANY
             else:
-                return 28
+                return Square.WATERWORKS
         
-        # Go to next R (railway company) x 2
+        # Go to next railway company (x 2)
         if random_chance_card <= 10 * 0.0625:
-            if self.current_cell < 5 or self.current_cell > 35:
-                return 5
-            elif self.current_cell > 5 and self.current_cell < 15:
-                return 15
-            elif self.current_cell > 15 and self.current_cell < 25:
-                return 25
-            elif self.current_cell > 25 and self.current_cell < 35:
-                return 35
+            if (self.current_cell < Square.KINGS_CROSS_STATION or
+                self.current_cell > Square.LIVERPOOL_STREET_STATION):
+                return Square.KINGS_CROSS_STATION
+            elif (self.current_cell > Square.KINGS_CROSS_STATION and
+                  self.current_cell < Square.MARYLEBONE_STATION):
+                return Square.MARYLEBONE_STATION
+            elif (self.current_cell > Square.MARYLEBONE_STATION and
+                  self.current_cell < Square.FENCHURCH_STREET_STATION):
+                return Square.FENCHURCH_STREET_STATION
+            elif (self.current_cell > Square.FENCHURCH_STREET_STATION and
+                  self.current_cell < Square.LIVERPOOL_STREET_STATION):
+                return Square.LIVERPOOL_STREET_STATION
         
         return self.current_cell
 
