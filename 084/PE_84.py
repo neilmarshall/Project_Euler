@@ -163,7 +163,7 @@ class MonopolyModeller():
         """Check if landing on a square triggers a jump to different square"""
         
         # allow for "Go To Jail"
-        if self.current_cell == Square.GO_TO_JAIL:
+        if self._landed_on_jail():
             return Square.IN_JAIL
     
         # allow for Community Chest cards
@@ -175,6 +175,9 @@ class MonopolyModeller():
             return self._chance()
 
         return self.current_cell
+
+    def _landed_on_jail(self):
+        return self.current_cell == Square.GO_TO_JAIL
 
     def _landed_on_community_chest(self):
         return self.current_cell in {Square.COMMUNITY_CHEST_1,
