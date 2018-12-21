@@ -189,17 +189,9 @@ class MonopolyModeller():
 
     def _community_chest(self):
         """Allow for Community Chest cards"""
-        random_community_chest_card = random.random()      
-        
-        # Advance To Go
-        if random_community_chest_card <= 0.0625:
-            return Square.GO
-        
-        # Go To Jail
-        if random_community_chest_card <= 2 * 0.0625:
-            return Square.IN_JAIL
-        
-        return self.current_cell
+        return random.choices(
+            population=[Square.GO, Square.IN_JAIL, self.current_cell],
+            weights=[1, 1, 14])
 
     def _chance(self):
         """Allow for Chance cards"""
