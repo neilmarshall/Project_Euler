@@ -198,45 +198,17 @@ class MonopolyModeller():
 
     def _chance(self):
         """Allow for Chance cards"""
-        random_chance_card = random.random()
-        
-        # Advance To Go
-        if random_chance_card <= 0.0625:
-            return Square.GO
-        
-        # Go To Jail
-        if random_chance_card <= 2 * 0.0625:
-            return Square.IN_JAIL
-        
-        # Go To Pall Mall
-        if random_chance_card <= 3 * 0.0625:
-            return Square.PALL_MALL
-        
-        # Go to Trafalgar Square
-        if random_chance_card <= 4 * 0.0625:
-            return Square.TRAFALGAR_SQUARE
-        
-        # Go to Mayfair
-        if random_chance_card <= 5 * 0.0625:
-            return Square.MAYFAIR
-        
-        # Go to King's Cross Station
-        if random_chance_card <= 6 * 0.0625:
-            return Square.KINGS_CROSS_STATION
-        
-        # Go back 3 squares
-        if random_chance_card <= 7 * 0.0625:
-            return self.current_cell - 3
-        
-        # Go to next utility company
-        if random_chance_card <= 8 * 0.0625:
-            return self._get_nearest_utility_company()
-        
-        # Go to next railway company (x 2)
-        if random_chance_card <= 10 * 0.0625:
-            return self._get_nearest_station()
-        
-        return self.current_cell
+
+        # of the 16 Chance cards, 10 redirect
+        nearest_utility_company = self._get_nearest_utility_company()
+        nearest_station = self._get_nearest_station()
+        return random.choices(
+            population=[Square.GO, Square.IN_JAIL, Square.PALL_MALL,
+                        Square.TRAFALGAR_SQUARE, Square.MAYFAIR,
+                        Square.KINGS_CROSS_STATION, self.current_cell - 3,
+                        nearest_utility_company, nearest_station,
+                        self.current_cell],
+            weights=[1, 1, 1, 1, 1, 1, 1, 1, 2, 6])[0]
 
     def _get_nearest_utility_company(self):
         if (self.current_cell < Square.ELECTRIC_COMPANY or
