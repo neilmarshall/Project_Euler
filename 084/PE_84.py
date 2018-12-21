@@ -211,26 +211,21 @@ class MonopolyModeller():
             weights=[1, 1, 1, 1, 1, 1, 1, 1, 2, 6])[0]
 
     def _get_nearest_utility_company(self):
-        if (self.current_cell < Square.ELECTRIC_COMPANY or
-            self.current_cell > Square.WATERWORKS):
-            return Square.ELECTRIC_COMPANY
-        else:
+        if self.current_cell in range(Square.ELECTRIC_COMPANY, Square.WATERWORKS):
             return Square.WATERWORKS
+        else:
+            return Square.ELECTRIC_COMPANY
 
     def _get_nearest_station(self):
-        if (self.current_cell < Square.KINGS_CROSS_STATION or
-            self.current_cell > Square.LIVERPOOL_STREET_STATION):
-            return Square.KINGS_CROSS_STATION
-        elif (self.current_cell > Square.KINGS_CROSS_STATION and
-              self.current_cell < Square.MARYLEBONE_STATION):
+        if self.current_cell in range(Square.KINGS_CROSS_STATION, Square.MARYLEBONE_STATION):
             return Square.MARYLEBONE_STATION
-        elif (self.current_cell > Square.MARYLEBONE_STATION and
-              self.current_cell < Square.FENCHURCH_STREET_STATION):
+        elif self.current_cell in range(Square.MARYLEBONE_STATION, Square.FENCHURCH_STREET_STATION):
             return Square.FENCHURCH_STREET_STATION
-        elif (self.current_cell > Square.FENCHURCH_STREET_STATION and
-              self.current_cell < Square.LIVERPOOL_STREET_STATION):
+        elif self.current_cell in range(Square.FENCHURCH_STREET_STATION, Square.LIVERPOOL_STREET_STATION):
             return Square.LIVERPOOL_STREET_STATION
-
+        else:
+            return Square.KINGS_CROSS_STATION
+        
     def _parse_results(self, square_count=3):
         """Parse and return results"""
         result_string = ""
