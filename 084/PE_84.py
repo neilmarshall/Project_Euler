@@ -110,7 +110,7 @@ class MonopolyModeller():
         """Initialise modeller"""
         self.die_size = die_size
         self.cell_counter = Counter()
-        self.current_cell = Square.GO
+        self.current_square = Square.GO
         self.double_roll_count = 0
 
     def run_model(self, turn_limit=10000000, seed=None):
@@ -124,7 +124,7 @@ class MonopolyModeller():
         for _ in range(turn_limit):
             roll, is_double_roll = self._roll_dice()
             self._move(roll, is_double_roll)
-            self.cell_counter[self.current_cell] += 1
+            self.cell_counter[self.current_square] += 1
 
         # parse and return results
         return self._parse_results()
@@ -137,7 +137,7 @@ class MonopolyModeller():
 
     def _move(self, roll, is_double_roll):
         """Mechanism for moving square"""
-        self.current_cell = (self.current_cell + roll) % 40
+        self.current_square = (self.current_square + roll) % 40
         
         # allow for "three double rolls feature"
         if is_double_roll:
@@ -146,11 +146,11 @@ class MonopolyModeller():
             self.double_roll_count = 0
 
         if self.double_roll_count == 3:
-            self.current_cell = 10
+            self.current_square = Square.IN_JAIL
             self.double_roll_count = 0
 
         # take action depending on square landed on
-        self.current_cell = self._check_square_action()
+        self.current_square = self._check_square_action()
 
     def _check_square_action(self):
         """Check if landing on a square triggers a jump to different square"""
@@ -167,17 +167,17 @@ class MonopolyModeller():
         if self._landed_on_chance():
             return self._chance()
 
-        return self.current_cell
-
+        return self.
+    
     def _landed_on_jail(self):
-        return self.current_cell == Square.GO_TO_JAIL
+        return self.current_square == Square.GO_TO_JAIL
 
     def _landed_on_community_chest(self):
-        return self.current_cell in {Square.COMMUNITY_CHEST_1,
+        return self.current_square in {Square.COMMUNITY_CHEST_1,
             Square.COMMUNITY_CHEST_2, Square.COMMUNITY_CHEST_3}
 
     def _landed_on_chance(self):
-        return self.current_cell in {Square.CHANCE_1, Square.CHANCE_2,
+        return self.current_square in {Square.CHANCE_1, Square.CHANCE_2,
             Square.CHANCE_3}
 
     def _community_chest(self):
@@ -186,7 +186,7 @@ class MonopolyModeller():
         # of the 16 Community Chest cards, only 2 redirect ("Advance To Go"
         # and "Go To Jail")
         return random.choices(
-            population=[Square.GO, Square.IN_JAIL, self.current_cell],
+            population=[Square.GO, Square.IN_JAIL, self.current_square],
             weights=[1, 1, 14])[0]
 
     def _chance(self):
@@ -198,23 +198,23 @@ class MonopolyModeller():
         return random.choices(
             population=[Square.GO, Square.IN_JAIL, Square.PALL_MALL,
                         Square.TRAFALGAR_SQUARE, Square.MAYFAIR,
-                        Square.KINGS_CROSS_STATION, self.current_cell - 3,
+                        Square.KINGS_CROSS_STATION, self.current_square - 3,
                         nearest_utility_company, nearest_station,
-                        self.current_cell],
+                        self.current_square],
             weights=[1, 1, 1, 1, 1, 1, 1, 1, 2, 6])[0]
 
     def _get_nearest_utility_company(self):
-        if self.current_cell in range(Square.ELECTRIC_COMPANY, Square.WATERWORKS):
+        if self.current_square in range(Square.ELECTRIC_COMPANY, Square.WATERWORKS):
             return Square.WATERWORKS
         else:
             return Square.ELECTRIC_COMPANY
 
     def _get_nearest_station(self):
-        if self.current_cell in range(Square.KINGS_CROSS_STATION, Square.MARYLEBONE_STATION):
+        if self.current_square in range(Square.KINGS_CROSS_STATION, Square.MARYLEBONE_STATION):
             return Square.MARYLEBONE_STATION
-        elif self.current_cell in range(Square.MARYLEBONE_STATION, Square.FENCHURCH_STREET_STATION):
+        elif self.current_square in range(Square.MARYLEBONE_STATION, Square.FENCHURCH_STREET_STATION):
             return Square.FENCHURCH_STREET_STATION
-        elif self.current_cell in range(Square.FENCHURCH_STREET_STATION, Square.LIVERPOOL_STREET_STATION):
+        elif self.current_square in range(Square.FENCHURCH_STREET_STATION, Square.LIVERPOOL_STREET_STATION):
             return Square.LIVERPOOL_STREET_STATION
         else:
             return Square.KINGS_CROSS_STATION
