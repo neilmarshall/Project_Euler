@@ -32,7 +32,6 @@ movement will be ignored and the player will remain on the CC/CH square.
         Go to next U (utility company)
         Go back 3 squares.
 
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 The heart of this problem concerns the likelihood of visiting a particular
 square. That is, the probability of finishing at that square after a roll. For
 this reason it should be clear that, with the exception of G2J for which the
@@ -58,68 +57,82 @@ Solution: 101524
 import random
 from collections import Counter
 
-def PE_84(die_size, seed=1):
+class MonopolyModeller():
     """
-    >>> PE_84(6)
+    >>> model = MonopolyModeller(6)
+    >>> model.run_model(seed=1)
     '102400'
 
-    >>> PE_84(4)
+    >>> model = MonopolyModeller(4)
+    >>> model.run_model(seed=1)
     '101524'
     """
-    
-    # seed random number generator
-    random.seed(seed)
-    
-    # specify number of rolls
-    TURN_LIMIT = 10000000
-    
-    current_cell = turn_counter = 0
-    cell_counter = Counter()
-    while turn_counter < TURN_LIMIT:
+    def __init__(self, die_size):
+        """Initialise modeller"""
+        self.die_size = die_size
+        self.cell_counter = Counter()
+        self.current_cell = 0
+        self.double_roll_count = 0
+
+    def run_model(self, turn_limit=10000000, seed=None):
+        """Repeatedly move, keeping track of squares visited"""
         
+        # seed random number generator
+        if seed is not None:
+            random.seed(seed)
+
         # basic game mechanics
-        turn_counter += 1
-        roll, is_double_roll = roll_dice(die_size)
-        current_cell = (current_cell + roll) % 40
+        for _ in range(turn_limit):
+            roll, is_double_roll = self._roll_dice()
+            self._move(roll, is_double_roll)
+            self.cell_counter[self.current_cell] += 1
+
+        # parse and return results
+        return self._parse_results()
+
+    def _roll_dice(self):
+        """Return random roll and double-roll indicator flag"""
+        roll1 = random.randint(1, self.die_size)
+        roll2 = random.randint(1, self.die_size)
+        return roll1 + roll2, roll1 == roll2
+
+    def _move(self, roll, is_double_roll):
+        """Mechanism for moving square"""
+        self.current_cell = (self.current_cell + roll) % 40
         
         # allow for "three double rolls feature"
         if is_double_roll:
-            double_roll_count += 1
+            self.double_roll_count += 1
         else:
-            double_roll_count = 0
+            self.double_roll_count = 0
 
-        if double_roll_count == 3:
-            current_cell = 10
-            double_roll_count = 0
+        if self.double_roll_count == 3:
+            self.current_cell = 10
+            self.double_roll_count = 0
 
         # take action depending on square landed on
-        current_cell = check_square_action(current_cell)
+        self.current_cell = self._check_square_action()
+
+    def _check_square_action(self):
+        """Check if landing on a square triggers a jump to different square"""
         
-        # mark current cell as "landed on"
-        cell_counter[current_cell] += 1
-
-    result_string = ""
-    for key, _ in cell_counter.most_common(3):
-        result_string += "{:0<2d}".format(key)
-    return result_string
-
-
-def roll_dice(die_size):
-    roll1 = random.randint(1, die_size)
-    roll2 = random.randint(1, die_size)
-    return roll1 + roll2, roll1 == roll2
-
-
-def check_square_action(current_cell):
+        # allow for "Go To Jail"
+        if self.current_cell == 30:
+            return 10
     
-    # allow for "Go To Jail"
-    if current_cell == 30:
-        return 10
+        # allow for Community Chest cards
+        if self.current_cell in {2, 17, 33}:
+            return self._community_chest()
     
-    # allow for Community Chest cards
-    if current_cell in {2, 17, 33}:
-        
-        random_community_chest_card = random.random()
+        # allow for Chance cards
+        if self.current_cell in {7, 22, 36}:
+            return self._chance()
+
+        return self.current_cell
+
+    def _community_chest(self):
+        """Allow for Community Chest cards"""
+        random_community_chest_card = random.random()      
         
         # "Advance To Go"
         if random_community_chest_card <= 0.0625:
@@ -128,10 +141,11 @@ def check_square_action(current_cell):
         # "Go To Jail"
         if random_community_chest_card <= 2 * 0.0625:
             return 10
-    
-    # allow for Chance cards
-    if current_cell in {7, 22, 36}:
         
+        return self.current_cell
+
+    def _chance(self):
+        """Allow for Chance cards"""
         random_chance_card = random.random()
         
         # "Advance To Go"
@@ -160,27 +174,34 @@ def check_square_action(current_cell):
         
         # Go back 3 squares
         if random_chance_card <= 7 * 0.0625:
-            return current_cell - 3
+            return self.current_cell - 3
         
         # Go to next U (utility company)
         if random_chance_card <= 8 * 0.0625:
-            if current_cell < 12 or current_cell > 28:
+            if self.current_cell < 12 or self.current_cell > 28:
                 return 12
             else:
                 return 28
-
+        
         # Go to next R (railway company) x 2
         if random_chance_card <= 10 * 0.0625:
-            if current_cell < 5 or current_cell > 35:
+            if self.current_cell < 5 or self.current_cell > 35:
                 return 5
-            elif current_cell > 5 and current_cell < 15:
+            elif self.current_cell > 5 and self.current_cell < 15:
                 return 15
-            elif current_cell > 15 and current_cell < 25:
+            elif self.current_cell > 15 and self.current_cell < 25:
                 return 25
-            elif current_cell > 25 and current_cell < 35:
+            elif self.current_cell > 25 and self.current_cell < 35:
                 return 35
+        
+        return self.current_cell
 
-    return current_cell
+    def _parse_results(self, square_count=3):
+        """Parse and return results"""
+        result_string = ""
+        for key, _ in self.cell_counter.most_common(square_count):
+            result_string += "{:0<2d}".format(key)
+        return result_string
 
 
 if __name__ == '__main__':
