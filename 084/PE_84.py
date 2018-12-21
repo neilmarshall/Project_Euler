@@ -189,9 +189,12 @@ class MonopolyModeller():
 
     def _community_chest(self):
         """Allow for Community Chest cards"""
+        
+        # of the 16 Community Chest cards, only 2 redirect ("Advance To Go"
+        # and "Go To Jail")
         return random.choices(
             population=[Square.GO, Square.IN_JAIL, self.current_cell],
-            weights=[1, 1, 14])
+            weights=[1, 1, 14])[0]
 
     def _chance(self):
         """Allow for Chance cards"""
