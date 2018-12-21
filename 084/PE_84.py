@@ -167,7 +167,7 @@ class MonopolyModeller():
         if self._landed_on_chance():
             return self._chance()
 
-        return self.
+        return self.current_square
     
     def _landed_on_jail(self):
         return self.current_square == Square.GO_TO_JAIL
