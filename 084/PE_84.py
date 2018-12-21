@@ -230,28 +230,34 @@ class MonopolyModeller():
         
         # Go to next utility company
         if random_chance_card <= 8 * 0.0625:
-            if (self.current_cell < Square.ELECTRIC_COMPANY or
-                self.current_cell > Square.WATERWORKS):
-                return Square.ELECTRIC_COMPANY
-            else:
-                return Square.WATERWORKS
+            return self._get_nearest_utility_company()
         
         # Go to next railway company (x 2)
         if random_chance_card <= 10 * 0.0625:
-            if (self.current_cell < Square.KINGS_CROSS_STATION or
-                self.current_cell > Square.LIVERPOOL_STREET_STATION):
-                return Square.KINGS_CROSS_STATION
-            elif (self.current_cell > Square.KINGS_CROSS_STATION and
-                  self.current_cell < Square.MARYLEBONE_STATION):
-                return Square.MARYLEBONE_STATION
-            elif (self.current_cell > Square.MARYLEBONE_STATION and
-                  self.current_cell < Square.FENCHURCH_STREET_STATION):
-                return Square.FENCHURCH_STREET_STATION
-            elif (self.current_cell > Square.FENCHURCH_STREET_STATION and
-                  self.current_cell < Square.LIVERPOOL_STREET_STATION):
-                return Square.LIVERPOOL_STREET_STATION
+            return self._get_nearest_station()
         
         return self.current_cell
+
+    def _get_nearest_utility_company(self):
+        if (self.current_cell < Square.ELECTRIC_COMPANY or
+            self.current_cell > Square.WATERWORKS):
+            return Square.ELECTRIC_COMPANY
+        else:
+            return Square.WATERWORKS
+
+    def _get_nearest_station(self):
+        if (self.current_cell < Square.KINGS_CROSS_STATION or
+            self.current_cell > Square.LIVERPOOL_STREET_STATION):
+            return Square.KINGS_CROSS_STATION
+        elif (self.current_cell > Square.KINGS_CROSS_STATION and
+              self.current_cell < Square.MARYLEBONE_STATION):
+            return Square.MARYLEBONE_STATION
+        elif (self.current_cell > Square.MARYLEBONE_STATION and
+              self.current_cell < Square.FENCHURCH_STREET_STATION):
+            return Square.FENCHURCH_STREET_STATION
+        elif (self.current_cell > Square.FENCHURCH_STREET_STATION and
+              self.current_cell < Square.LIVERPOOL_STREET_STATION):
+            return Square.LIVERPOOL_STREET_STATION
 
     def _parse_results(self, square_count=3):
         """Parse and return results"""
