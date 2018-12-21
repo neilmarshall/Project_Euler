@@ -23,14 +23,13 @@ movement will be ignored and the player will remain on the CC/CH square.
     Chance (10/16 cards):
         Advance to GO
         Go to JAIL
-        Go to C1
-        Go to E3
-        Go to H2
-        Go to R1
-        Go to next R (railway company)
-        Go to next R
-        Go to next U (utility company)
-        Go back 3 squares.
+        Go to Pall Mall
+        Go to Trafalgar Square
+        Go to Mayfair
+        Go to King's Cross Station
+        Go to next railway company (x 2)
+        Go to next utility company
+        Go back 3 squares
 
 The heart of this problem concerns the likelihood of visiting a particular
 square. That is, the probability of finishing at that square after a roll. For
@@ -168,20 +167,20 @@ class MonopolyModeller():
             return Square.IN_JAIL
     
         # allow for Community Chest cards
-        if self._on_community_chest():
+        if self._landed_on_community_chest():
             return self._community_chest()
     
         # allow for Chance cards
-        if self._on_chance():
+        if self._landed_on_chance():
             return self._chance()
 
         return self.current_cell
 
-    def _on_community_chest(self):
+    def _landed_on_community_chest(self):
         return self.current_cell in {Square.COMMUNITY_CHEST_1,
             Square.COMMUNITY_CHEST_2, Square.COMMUNITY_CHEST_3}
 
-    def _on_chance(self):
+    def _landed_on_chance(self):
         return self.current_cell in {Square.CHANCE_1, Square.CHANCE_2,
             Square.CHANCE_3}
 
