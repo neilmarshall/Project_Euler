@@ -55,6 +55,7 @@ modal string.
 Solution: 101524
 """
 import random
+import unittest
 from collections import Counter
 from enum import IntEnum, auto, unique
 
@@ -103,15 +104,7 @@ class Square(IntEnum):
 
 
 class MonopolyModeller():
-    """
-    >>> model = MonopolyModeller(6)
-    >>> model.run_model(seed=1)
-    '102400'
-
-    >>> model = MonopolyModeller(4)
-    >>> model.run_model(seed=1)
-    '101524'
-    """
+    """Models likelihood of landing of squares in a standard game of Monopoly"""
 
     def __init__(self, die_size):
         """Initialise modeller"""
@@ -234,5 +227,19 @@ class MonopolyModeller():
         return result_string
 
 
+class TestMonopolyModeller(unittest.TestCase):
+    def test_modeller_with_6_sided_die_and_limited_model_points(self):
+        model = MonopolyModeller(6)
+        self.assertEqual(model.run_model(turn_limit=1000, seed=1), '102315')
+
+    def test_modeller_with_6_sided_die(self):
+        model = MonopolyModeller(6)
+        self.assertEqual(model.run_model(seed=1), '102400')
+
+    def test_modeller_with_4_sided_die(self):
+        model = MonopolyModeller(4)
+        self.assertEqual(model.run_model(seed=1), '101524')
+
+
 if __name__ == '__main__':
-    import doctest; doctest.testmod(verbose=True)
+    unittest.main()
