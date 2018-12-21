@@ -232,11 +232,11 @@ class TestMonopolyModeller(unittest.TestCase):
         model = MonopolyModeller(6)
         self.assertEqual(model.run_model(turn_limit=1000, seed=1), '102315')
 
-    def test_modeller_with_6_sided_die(self):
+    def test_modeller_with_6_sided_die_and_full_model_points(self):
         model = MonopolyModeller(6)
         self.assertEqual(model.run_model(seed=1), '102400')
 
-    def test_modeller_with_4_sided_die(self):
+    def test_modeller_with_4_sided_die_and_full_model_points(self):
         model = MonopolyModeller(4)
         self.assertEqual(model.run_model(seed=1), '101524')
 
