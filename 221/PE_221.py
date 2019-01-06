@@ -14,49 +14,46 @@ Find the 150000th Alexandrian integer.
 
 Solution: 1884161251122450
 """
+from math import floor
 
-function main(l)
-  A = Array{Float64}(0)
-  p = 0
-  q = 0
-  r = 0
-  curMax = 0
-  println("Initialising array...")
-  while length(A) <= l
-  	r += 1
-  	p = -(r + 1)
-  	while (p^2 + 2 * p * r - 1) < 0
-  		q = (1 - p * r) / (p + r)
-  		if floor(q) == q
-  			push!(A, p * q * r)
-      end
-  		p -= 1
-    end
-  end
-  A = sort(A)
-  curMax = A[length(A)]
-  println("Calculating further results...")
-  while r * (r + 1) * (r + 2) < curMax
-  	r += 1
-  	p = -(r + 1)
-  	while (p^2 + 2 * p * r - 1) < 0
-  		q = (1 - p * r) / (p + r)
-  		if floor(q) == q
-        if p * q * r < curMax
-          pop!(A)
-    			push!(A, p * q * r)
-          A = sort(A)
-          curMax = A[l]
-          println(Int64(curMax))
-        end
-      end
-  		p -= 1
-    end
-  end
-  println("Finished...")
-  return A
-end
+def main(l):
+    A = []
+    p = 0
+    q = 0
+    r = 0
+    curMax = 0
+    print("Initialising array...")
+    # while len(A) <= l:
+    while len(A) < l:
+        r += 1
+        p = -(r + 1)
+        while (p**2 + 2 * p * r - 1) < 0:
+            q = (1 - p * r) / (p + r)
+            if floor(q) == q:
+                A.append(p * q * r)
+            p -= 1
+    A = sorted(A)
+    curMax = A[-1]
+    print("Calculating further results...")
+    while r * (r + 1) * (r + 2) < curMax:
+        r += 1
+        p = -(r + 1)
+        while (p**2 + 2 * p * r - 1) < 0:
+            q = (1 - p * r) / (p + r)
+            if floor(q) == q:
+                if p * q * r < curMax:
+                    A.pop()
+                    A.append(p * q * r)
+                    A = sorted(A)
+                    curMax = A[l]
+                    print(int(curMax))
+            p -= 1
+    print("Finished...")
+    return A
 
-l = 150000
-A = [Int64(a) for a in main(l)]
-println(A[l])
+
+if __name__ == '__main__':
+    # l = 150000
+    print(main(6))
+    # A = [int(a) for a in main(l)]
+    # print(A[l])
