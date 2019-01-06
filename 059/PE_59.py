@@ -44,13 +44,33 @@ class Cypher(object):
         """
         self.key = key
 
-    def decrypt(self, message):
-        """Return decrypted message"""
-        return ''.join(chr(ord(k) ^ c) for k, c in zip(cycle(self.key), message))
+    def encrypt(self, message):
+        """
+        Return encrypted message
+
+        Args:
+            message (string): Message to be encrypted
+
+        Returns:
+            int list: List of ASCII character codes for encrypted message
+        """
+        return [ord(k) ^ ord(c) for k, c in zip(cycle(self.key), message)]
+
+    def decrypt(self, characters):
+        """
+        Return decrypted message
+        
+        Args:
+            characters (int list): List of ASCII character codes to decrypt
+
+        Returns:
+            string: Decrypted message
+        """
+        return ''.join(chr(ord(k) ^ c) for k, c in zip(cycle(self.key), characters))
 
 
 if __name__ == '__main__':
     with open("p059_cipher.txt", 'rt') as f:
-        characters = f.read().split(',')
-    message = Cypher("god").decrypt(map(int, characters))
+        characters = map(int, f.read().split(','))
+    message = Cypher("god").decrypt(characters)
     print(message, f"\nSolution: {sum(ord(c) for c in message)}", sep='\n')
