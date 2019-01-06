@@ -16,15 +16,15 @@ Solution: 1884161251122450
 """
 from math import floor
 
-def main(l):
+def PE_221(limit):
+    """
+    >>> PE_221(6)
+    630
+    """
     A = []
-    p = 0
-    q = 0
-    r = 0
-    curMax = 0
-    print("Initialising array...")
-    # while len(A) <= l:
-    while len(A) < l:
+    p = q = r = curMax = 0
+    # print("Initialising array...")
+    while len(A) < limit:
         r += 1
         p = -(r + 1)
         while (p**2 + 2 * p * r - 1) < 0:
@@ -34,7 +34,7 @@ def main(l):
             p -= 1
     A = sorted(A)
     curMax = A[-1]
-    print("Calculating further results...")
+    # print("Calculating further results...")
     while r * (r + 1) * (r + 2) < curMax:
         r += 1
         p = -(r + 1)
@@ -45,15 +45,15 @@ def main(l):
                     A.pop()
                     A.append(p * q * r)
                     A = sorted(A)
-                    curMax = A[l]
+                    curMax = A[limit]
                     print(int(curMax))
             p -= 1
-    print("Finished...")
-    return A
+    # print("Finished...")
+    return list(map(int, A))[limit - 1]
 
 
 if __name__ == '__main__':
-    # l = 150000
-    print(main(6))
-    # A = [int(a) for a in main(l)]
-    # print(A[l])
+    import doctest; doctest.testmod(verbose=True)
+    # limit = 150000
+    # A = [int(a) for a in main(limit)]
+    # print(A[limit])
