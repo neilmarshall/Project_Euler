@@ -13,17 +13,6 @@
 //
 // Solution: 329468
 
-let fibonacciGenerator =
-    seq {
-        let mutable n, n0, n1 = 1, 0I, 1I
-        while true do
-            yield n, n1
-            let temp = n1
-            n1 <- n0 + n1
-            n0 <- temp
-            n <- n + 1
-    }
-
 let isDoublyPandigital n =
     let isLeadingPandigital (str : string) =
         let leadingString = str.ToCharArray().[0..8] |> Array.sort |> System.String.Concat
@@ -36,4 +25,8 @@ let isDoublyPandigital n =
     else
         isLeadingPandigital str && isTrailingPandigital str
 
-Seq.find (fun (n, fib) -> isDoublyPandigital fib) fibonacciGenerator |> fst |> printfn "%d"
+Seq.unfold (fun (n1, n0) -> Some (n1, (n0 + n1, n1))) (1I, 0I)
+|> Seq.mapi (fun n f -> (n + 1, isDoublyPandigital(f)))
+|> Seq.find snd
+|> fst
+|> printfn "%A"
