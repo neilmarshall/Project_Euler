@@ -15,12 +15,13 @@
 
 let fibonacciGenerator =
     seq {
-        let mutable n0, n1 = 0I, 1I
+        let mutable n, n0, n1 = 1, 0I, 1I
         while true do
-            yield n1
+            yield n, n1
             let temp = n1
             n1 <- n0 + n1
             n0 <- temp
+            n <- n + 1
     }
 
 let isDoublyPandigital n =
@@ -35,4 +36,4 @@ let isDoublyPandigital n =
     else
         isLeadingPandigital str && isTrailingPandigital str
 
-Seq.find isDoublyPandigital fibonacciGenerator |> printfn "%A"
+Seq.find (fun (n, fib) -> isDoublyPandigital fib) fibonacciGenerator |> fst |> printfn "%d"
