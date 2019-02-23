@@ -16,26 +16,23 @@ for the quadratic expression that produces the maximum number of primes for cons
 NOTE: Solution is given by a = -61 and b = 971, for a * b = -59,231 .
 */
 
-#include "prime_checker.h"
+#include "utilities.h"
 
 #include <iostream>
 
-int count_prime_runs(const int& a, const int& b, Prime_Checker& prime_checker) {
-    int n = 0;
-    while (prime_checker(n * n + a * n + b))
-        n++;
-    return n;
+using namespace primes;
+
+int count_prime_runs(const int& a, const int& b, int n=0) {
+    return is_prime(n * n + a * n + b) ? count_prime_runs(a, b, n + 1) : n;
 }
 
 int main() {
     int max_prime_run = 0, max_a = 0, max_b = 0;
     
-    Prime_Checker prime_checker;
-    
     for (int a = -999; a < 1000; a++) {
         for (int b = -1000; b <= 1000; b++) {
             if (b == 0) continue;  // will never have primes of the form n^2 + a.n + 0
-            int prime_run = count_prime_runs(a, b, prime_checker);
+            int prime_run = count_prime_runs(a, b);
             if (prime_run > max_prime_run) {
                 max_prime_run = prime_run;
                 max_a = a;
