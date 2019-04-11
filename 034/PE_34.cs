@@ -20,6 +20,7 @@ Solution: 40730
 */
 
 using System;
+using System.Linq;
 
 class Program
 {
@@ -38,13 +39,7 @@ class Program
 
     public static void Main()
     {
-        int sum = 0;
-        for (int n = 3; n <= 9999999; n++)
-        {
-            if (isCurious(n))
-                sum += n;
-        }
-        Console.WriteLine(sum);
+        Console.WriteLine(Enumerable.Range(3, 9999997).Where(isCurious).Sum());
     }
 }
 
