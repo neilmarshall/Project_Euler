@@ -14,8 +14,6 @@ let IsPractical n =
         |> Seq.distinct
         |> List.ofSeq
 
-    let divisors = GetDivisors n
-
     let rec IsSumOfDistinctDivisors divisors p =
         match divisors with
         | [] -> false
@@ -31,7 +29,10 @@ let IsPractical n =
                 else
                     IsSumOfDistinctDivisors tail p
 
-    Seq.forall (IsSumOfDistinctDivisors divisors) {1..n}
+    if n % 2 = 0 then
+        Seq.forall (IsSumOfDistinctDivisors (GetDivisors n)) {1..n}
+    else
+        n = 1
 
 
 let IsPrime n =
@@ -51,10 +52,15 @@ let IsPracticalQuadruplet n =
     [n + 1; n + 5; n + 9; n + 13; n + 17] |> List.forall IsPractical
 
 
-let IsEngineersParadise n = IsTriplePair n && IsPracticalQuadruplet n
+let IsEngineersParadise n =
+    if n % 1000 = 0 then printfn "%d" n
+    IsTriplePair n && IsPracticalQuadruplet n
 
-// [1..12] |> List.map IsPractical |> List.iter (printfn "%A")
-// [1..12] |> List.map IsPrime |> List.zip [1..12] |> List.iter (printfn "%A")
-// [19..25] |> List.map IsSexyPair |> List.iter (printfn "%A")
-Seq.find IsEngineersParadise (Seq.initInfinite (fun idx -> idx)) |> printfn "%d"
-Seq.take 4 (Seq.filter IsEngineersParadise (Seq.initInfinite (fun idx -> idx))) |> printfn "%A"
+// Seq.find IsEngineersParadise (Seq.initInfinite (fun idx -> idx)) |> printfn "%d"
+// Seq.take 4 (Seq.filter IsEngineersParadise (Seq.initInfinite (fun idx -> idx))) |> printfn "%A"
+
+(*
+11
+    --> (11, 17), (17, 23), (23, 29)
+    --> (12, 16, 20, 24, 28)
+*)
