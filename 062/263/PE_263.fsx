@@ -40,11 +40,11 @@ let IsPrime n =
 
 
 let IsSexyPair n =
-    [n; n+ 6] |> List.forall IsPrime
+    [n; n + 6] |> List.forall IsPrime
 
 
 let IsTriplePair n =
-    [n; n + 6; n + 12] |> List.forall IsPrime
+    [n; n + 6; n + 12] |> List.forall IsSexyPair
 
 
 let IsPracticalQuadruplet n =
