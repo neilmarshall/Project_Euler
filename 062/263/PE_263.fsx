@@ -38,5 +38,15 @@ let IsPrime n =
     let limit = int(Math.Sqrt(float n))
     {2..limit} |> Seq.forall (fun p -> n % p <> 0) && n > 1
 
+
+let IsSexyPair n =
+    [n; n+ 6] |> List.forall IsPrime
+
+
+let IsTriplePair n =
+    [n; n + 6; n + 12] |> List.forall IsPrime
+
+
 [1..12] |> List.map IsPractical |> List.iter (printfn "%A")
 [1..12] |> List.map IsPrime |> List.zip [1..12] |> List.iter (printfn "%A")
+[19..25] |> List.map IsSexyPair |> List.iter (printfn "%A")
