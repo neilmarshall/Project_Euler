@@ -51,8 +51,10 @@ let IsPracticalQuadruplet n =
     [n + 1; n + 5; n + 9; n + 13; n + 17] |> List.forall IsPractical
 
 
-let IsEngineersParadise  = IsTriplePair && IsPracticalQuadruplet
+let IsEngineersParadise n = IsTriplePair n && IsPracticalQuadruplet n
 
-[1..12] |> List.map IsPractical |> List.iter (printfn "%A")
-[1..12] |> List.map IsPrime |> List.zip [1..12] |> List.iter (printfn "%A")
-[19..25] |> List.map IsSexyPair |> List.iter (printfn "%A")
+// [1..12] |> List.map IsPractical |> List.iter (printfn "%A")
+// [1..12] |> List.map IsPrime |> List.zip [1..12] |> List.iter (printfn "%A")
+// [19..25] |> List.map IsSexyPair |> List.iter (printfn "%A")
+Seq.find IsEngineersParadise (Seq.initInfinite (fun idx -> idx)) |> printfn "%d"
+Seq.take 4 (Seq.filter IsEngineersParadise (Seq.initInfinite (fun idx -> idx))) |> printfn "%A"
