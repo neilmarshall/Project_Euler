@@ -33,4 +33,10 @@ let IsPractical n =
 
     Seq.forall (IsSumOfDistinctDivisors divisors) {1..n}
 
+
+let IsPrime n =
+    let limit = int(Math.Sqrt(float n))
+    {2..limit} |> Seq.forall (fun p -> n % p <> 0) && n > 1
+
 [1..12] |> List.map IsPractical |> List.iter (printfn "%A")
+[1..12] |> List.map IsPrime |> List.zip [1..12] |> List.iter (printfn "%A")
