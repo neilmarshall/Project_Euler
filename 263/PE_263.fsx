@@ -2,6 +2,23 @@
 
 open System
 
+let GetPrimes n =
+
+    let flags = Array.concat [ [| false; false |]; [| for _ in 2..n -> true |] ]
+    for p in 2..(int(sqrt(float n))) do
+        for q in 2..(n / p) do
+            flags.[p * q] <- false
+    seq { for i in 2..n do if flags.[i] then yield i }
+
+
+let FilterTriplePairs limit =
+    let primes = GetPrimes limit |> Set.ofSeq
+    {1..limit}
+    |> Seq.filter (fun n ->
+        seq [n; n + 6; n + 12; n + 18]
+        |> Seq.forall (fun n -> Seq.contains n primes))
+
+
 let IsPractical n =
 
     let GetDivisors n =
@@ -49,11 +66,18 @@ let IsTriplePair n =
 
 
 let IsPracticalQuadruplet n =
-    [n + 1; n + 5; n + 9; n + 13; n + 17] |> List.forall IsPractical
+    printfn "%d" n
+    let result = [n + 1; n + 5; n + 9; n + 13; n + 17] |> List.forall IsPractical
+    if result then
+        printfn "result found: %d" n
+        result
+    else
+        result
 
 
 let IsEngineersParadise n =
-    if n % 1000 = 0 then printfn "%d" n
+    //if n % 1000 = 0 then printfn "%d" n
+    printfn "%d" n
     IsTriplePair n && IsPracticalQuadruplet n
 
 // Seq.find IsEngineersParadise (Seq.initInfinite (fun idx -> idx)) |> printfn "%d"
@@ -64,3 +88,7 @@ let IsEngineersParadise n =
     --> (11, 17), (17, 23), (23, 29)
     --> (12, 16, 20, 24, 28)
 *)
+
+FilterTriplePairs 200 |> printfn "%A"
+FilterTriplePairs 50000 |> Seq.toList |> printfn "%A"
+FilterTriplePairs 50000 |> Seq.filter IsPracticalQuadruplet |> Seq.take 4 |> printfn "%A"
