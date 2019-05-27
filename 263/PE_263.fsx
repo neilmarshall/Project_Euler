@@ -65,15 +65,16 @@ let GetEngineersParadise limit =
     |> Seq.toList
 
 
-let PE263 =
+let PE263 seed =
     let rec GetSolution seed =
         let results = GetEngineersParadise seed
         if List.length results >= 4 then
             Seq.take 4 results |> Seq.toList
         else
             GetSolution (seed * 2)
-    GetSolution 1
+    GetSolution seed
 
 
 //1000000 |> FilterTriplePairs |> Seq.filter IsPracticalQuadruplet |> Seq.toList |> printfn "%A"
-PE263 |> printfn "%A"
+//PE263 1 |> printfn "%A"
+seq {1 .. 1000} |> Seq.filter IsPractical |> Seq.toList |> printfn "%A"
