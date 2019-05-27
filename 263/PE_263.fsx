@@ -13,17 +13,15 @@ let GetPrimes n =
 
 let FilterTriplePairs limit =
     let primes = GetPrimes limit |> Set.ofSeq
-    {1..limit}
-    |> Seq.filter (fun n ->
-        seq [n; n + 6; n + 12; n + 18]
-        |> Seq.forall (fun n -> Set.contains n primes))
+    seq {1..limit}
+    |> Seq.filter (fun n -> seq {n .. 6 .. n + 18} |> Seq.forall (fun n -> Set.contains n primes))
 
 
 let IsPractical n =
 
     let GetDivisors n =
         let limit = int(sqrt(float n))
-        {1..limit}
+        seq {1..limit}
         |> Seq.filter (fun x -> n % x = 0)
         |> Seq.map (fun x -> [x; n / x])
         |> Seq.concat
@@ -53,13 +51,29 @@ let IsPractical n =
 
 
 let IsPracticalQuadruplet n =
-    printfn "%d" n
-    let result = [n + 1; n + 5; n + 9; n + 13; n + 17] |> List.forall IsPractical
-    if result then
-        printfn "result found: %d" n
-        result
-    else
-        result
+    //printfn "%d" n
+    let result = {n + 1 .. 4 .. n + 17} |> Seq.forall IsPractical
+    if result then printfn "\tresult found: %d" n
+    result
 
 
-500000 |> FilterTriplePairs |> Seq.filter IsPracticalQuadruplet |> Seq.toList |> printfn "%A"
+let GetEngineersParadise limit =
+    printfn "%d" limit
+    limit
+    |> FilterTriplePairs
+    |> Seq.filter IsPracticalQuadruplet
+    |> Seq.toList
+
+
+let PE263 =
+    let rec GetSolution seed =
+        let results = GetEngineersParadise seed
+        if List.length results >= 4 then
+            Seq.take 4 results |> Seq.toList
+        else
+            GetSolution (seed * 2)
+    GetSolution 1
+
+
+//1000000 |> FilterTriplePairs |> Seq.filter IsPracticalQuadruplet |> Seq.toList |> printfn "%A"
+PE263 |> printfn "%A"
