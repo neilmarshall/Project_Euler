@@ -14,44 +14,47 @@ Solution: 24702
 *)
 
 type CellValue = | KnownValue of int | PotentialValues of int list
-type Cell = { value : CellValue; row : int; column : int; grid : int }
 
-let cellIsSolved cell =
-    match cell.value with
-    | KnownValue _ -> true
-    | PotentialValues _ -> false
+type Cell = { value : CellValue; row : int; column : int; grid : int } with
 
-let cellIsUnsolved = cellIsSolved >> not
+    member this.IsSolved =
+        match this.value with
+        | KnownValue _ -> true
+        | PotentialValues _ -> false
 
-let extractKnownValue cell =
-    match cell.value with
-    | KnownValue value -> value
-    | _ -> failwith "cell value error"
+    member this.ExtractKnownValue =
+        match this.value with
+        | KnownValue value -> value
+        | _ -> failwith "cell value error"
 
-let extractPotentialValues cell =
-    match cell.value with
-    | PotentialValues values -> values
-    | _ -> failwith "cell value error"
+    member this.ExtractPotentialValues =
+        match this.value with
+        | PotentialValues values -> values
+        | _ -> failwith "cell value error"
+
+let isSolved = fun (c : Cell) -> c.IsSolved
+let extractKnownValue = fun (c : Cell) -> c.ExtractKnownValue
+let extractPotentialValues = fun (c : Cell) -> c.ExtractPotentialValues
 
 let (|Solved|Unsolved|Unsolvable|) grid =
     let checkCells cells =
         cells |> List.map extractKnownValue |> List.sort = [1..9]
     let checkSolution grouper =
         List.groupBy grouper >> List.map (fun (_, cells) -> cells) >> List.forall checkCells
-    if List.forall cellIsSolved grid then
+    if List.forall isSolved grid then
         if (checkSolution (fun c -> c.row) grid) &&
            (checkSolution (fun c -> c.column) grid) &&
            (checkSolution (fun c -> c.grid) grid)
             then Solved
             else Unsolvable
     else
-        if grid |> List.filter cellIsUnsolved |> List.map extractPotentialValues |> List.exists (fun v -> v = [])
+        if grid |> List.filter (isSolved >> not) |> List.map extractPotentialValues |> List.exists (fun v -> v = [])
             then Unsolvable
             else Unsolved
     
 let rec solvePuzzle grid =
     let guessSolution grid =
-        let firstUnknownCell = List.find cellIsUnsolved grid
+        let firstUnknownCell = List.find (isSolved >> not) grid
         let newGrid testValue =
             grid
             |> List.map (fun cell ->
@@ -63,7 +66,7 @@ let rec solvePuzzle grid =
                 match solvePuzzle (newGrid head) with
                 | Some grid -> Some grid
                 | None -> attempt tail
-        extractPotentialValues firstUnknownCell |> attempt
+        firstUnknownCell.ExtractPotentialValues |> attempt
     let rec reduceGrid grid =
         let eliminateValuesFromCell grid cell =
             let convertValuesToCellValues values =
@@ -72,16 +75,12 @@ let rec solvePuzzle grid =
                 | _ -> PotentialValues values
             let valuesToEliminate = 
                 grid
-                |> List.filter cellIsSolved
+                |> List.filter isSolved
                 |> List.filter (fun c -> c.row = cell.row || c.column = cell.column || c.grid = cell.grid)
                 |> List.map extractKnownValue
                 |> Set.ofList
-            let potentialValues =
-                match cell.value with
-                | PotentialValues values -> values
-                | _ -> failwith "cell value error"
             let newPotentialValues =
-                Set.difference (Set.ofList potentialValues) valuesToEliminate
+                Set.difference (Set.ofList cell.ExtractPotentialValues) valuesToEliminate
                 |> Set.toList
                 |> List.sort
                 |> convertValuesToCellValues
@@ -93,15 +92,11 @@ let rec solvePuzzle grid =
                 | KnownValue _ -> cell
                 | PotentialValues _ -> eliminateValuesFromCell grid cell)
         if grid' = grid then grid' else reduceGrid grid'
-    match grid with
-    | Solved -> Some grid
+    let grid' = reduceGrid grid
+    match grid' with
+    | Solved -> Some grid'
     | Unsolvable -> None
-    | Unsolved ->
-        let grid' = reduceGrid grid
-        match grid' with
-        | Solved -> Some grid'
-        | Unsolvable -> None
-        | Unsolved -> guessSolution grid'
+    | Unsolved -> guessSolution grid'
 
 
 // read data, parse as puzzles, solve puzzles and combine answers into final solution to problem
