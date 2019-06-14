@@ -13,7 +13,7 @@ Solution: 21035
 """
 from pyutils.primes import get_primes_up_to_n
 
-def PE123(limit, prime_limit=2):
+def PE123(limit, prime_limit=2, skip=0):
     """
     >>> PE123(1e9)
     7037
@@ -22,11 +22,12 @@ def PE123(limit, prime_limit=2):
     21035
     """
     psr = lambda p, n: ((p - 1)**n + (p + 1)**n) % p**2
-    for n, p in enumerate(get_primes_up_to_n(prime_limit), 1):
+    primes = get_primes_up_to_n(prime_limit)
+    for n, p in enumerate(primes[skip:], skip + 1):
         remainder = psr(p, n)
         if remainder >= limit:
             return n
-    return PE123(limit, prime_limit * 2)
+    return PE123(limit, prime_limit * 2, len(primes))
 
 
 if __name__ == '__main__':
