@@ -49,41 +49,71 @@ How many distinct ways can a player checkout with a score less than 100?
 
 Solution: 38182
 """
+from enum import IntEnum
+from functools import total_ordering
+from itertools import product, starmap
+
+class Multiplier(IntEnum):
+    SINGLE = 1
+    DOUBLE = 2
+    TRIPLE = 3
+
+
+@total_ordering
+class Dart():
+
+    def __init__(self, multiplier, value):
+        self.multiplier = multiplier
+        self.value = value
+
+    @property
+    def score(self):
+        return self.multiplier * self.value
+
+    def __eq__(self, other):
+        return self.multiplier == other.multiplier and self.value == other.value
+
+    def __lt__(self, other):
+        if self.multiplier == other.multiplier:
+            return self.value < other.value
+        return self.multiplier < other.multiplier
+
+    def __repr__(self):
+        return f"Dart({self.multiplier}, {self.value})"
+
+
+class Checkout():
+
+    def __init__(self, *darts):
+        self.darts = darts
+
+    @property
+    def score(self):
+        return sum(dart.score for dart in self.darts)
+
+    def __repr__(self):
+        return f"Checkout({self.darts.__repr__()})"
+
+
 def count_checkouts():
     """
     >>> count_checkouts()
     38182
     """
-    multipliers = ['S', 'D', 'T']
-    values = range(1, 21)
-    darts = [multiplier + str(value) for multiplier in multipliers for value in values] + ['S25', 'D25']
+    darts = [Dart(multiplier, value)
+             for multiplier in (Multiplier.SINGLE, Multiplier.DOUBLE, Multiplier.TRIPLE)
+             for value in range(1, 21)] + \
+            [Dart(Multiplier.SINGLE, 25), Dart(Multiplier.DOUBLE, 25)]
 
-    pairs = []
-    temp_darts = darts[:]
-    for dart in darts:
-        for temp_dart in temp_darts:
-            pairs.append((dart, temp_dart))
-        temp_darts.remove(dart)
+    doubles = list(filter(lambda dart: dart.multiplier == Multiplier.DOUBLE, darts))
 
-    checkouts = []
-    doubles = list(filter(lambda dart: dart[0] == 'D', darts))
-    for double in doubles:
-        checkouts.append((double,))
-    for dart in darts:
-        for double in doubles:
-            checkouts.append((dart, double))
-    for pair in pairs:
-        for double in doubles:
-            checkouts.append((pair[0], pair[1], double))
+    pairs = [(d1, d2) for d1 in darts for d2 in filter(lambda d: d >= d1, darts)]
 
-    def score_dart(dart):
-        multiplier = 1 * (dart[0] == 'S') + 2 * (dart[0] == 'D') + 3 * (dart[0] == 'T')
-        return multiplier * int(dart[1:])
+    checkouts = list(map(Checkout, doubles)) + \
+                list(starmap(Checkout, product(darts, doubles))) + \
+                list(starmap(Checkout, ((p[0], p[1], d) for p, d in product(pairs, doubles))))
 
-    def score_checkout(checkout):
-        return sum([score_dart(dart) for dart in checkout])
-            
-    return sum((1 for checkout in checkouts if score_checkout(checkout) < 100))
+    return len(list(filter(lambda checkout: checkout.score < 100, checkouts)))
 
 
 if __name__ == '__main__': 
