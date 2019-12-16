@@ -16,55 +16,59 @@ You are given that S(10000)=950007619.
 Find  S(5678027) + S(7208785).
 *)
 
+#load "./miller_rabin.fsx"
+
 module PE196 =
 
-    let private triangle n = n * (n - 1L) / 2L
+    let private triangle n = n * (n - 1UL) / 2UL
 
     let private getRow n =
         let t = triangle n
-        [|t + 1L .. t + n|]
+        [|t + 1UL .. t + n|]
 
     type private PrimeChecker() =
+        let mr = MR.MillerRabin()
 
-        let isPrime n = {2L..int64(sqrt(float(n)))} |> Seq.forall (fun p -> n % p <> 0L)
+        let isPrime n = {2UL..uint64(sqrt(float(n)))} |> Seq.forall (fun p -> n % p <> 0UL)
 
-        let known = System.Collections.Generic.Dictionary<int64, bool>()
+        let known = System.Collections.Generic.Dictionary<uint64, bool>()
 
         member this.Check n =
             //if known.ContainsKey(n) |> not then known.Add(n, isPrime n)
             //known.[n]
-            isPrime n
+            //isPrime n
+            mr.IsPrime(n)
 
     let private getNeighbours (pc : PrimeChecker) row n =
-        let lowerBound = 1L + triangle row
+        let lowerBound = 1UL + triangle row
         let upperBound = row + triangle row
         if n < lowerBound || n > upperBound then failwith "invalid arguments"
-        let previousRowLowerBound = 1L + triangle (row - 1L)
-        let previousRowUpperBound = lowerBound - 1L
-        let subsequentRowLowerBound = upperBound + 1L
+        let previousRowLowerBound = 1UL + triangle (row - 1UL)
+        let previousRowUpperBound = lowerBound - 1UL
+        let subsequentRowLowerBound = upperBound + 1UL
         let subsequentRowUpperBound = subsequentRowLowerBound + row
         let neighbours = seq {
             // previous row
             let t = n - row
-            if t >= previousRowLowerBound && t <= previousRowUpperBound then yield t, row - 1L
-            let t = n - row + 1L
-            if t >= previousRowLowerBound && t <= previousRowUpperBound then yield t, row - 1L
-            let t = n - row + 2L
-            if t >= previousRowLowerBound && t <= previousRowUpperBound then yield t, row - 1L
+            if t >= previousRowLowerBound && t <= previousRowUpperBound then yield t, row - 1UL
+            let t = n - row + 1UL
+            if t >= previousRowLowerBound && t <= previousRowUpperBound then yield t, row - 1UL
+            let t = n - row + 2UL
+            if t >= previousRowLowerBound && t <= previousRowUpperBound then yield t, row - 1UL
 
             // current row
-            let t = n - 1L
+            let t = n - 1UL
             if t >= lowerBound && t <= upperBound then yield t, row
-            let t = n + 1L
+            let t = n + 1UL
             if t >= lowerBound && t <= upperBound then yield t, row
 
             // subsequent row
-            let t = n + row - 1L
-            if t >= subsequentRowLowerBound && t <= subsequentRowUpperBound then yield t, row + 1L
+            let t = n + row - 1UL
+            if t >= subsequentRowLowerBound && t <= subsequentRowUpperBound then yield t, row + 1UL
             let t = n + row
-            if t >= subsequentRowLowerBound && t <= subsequentRowUpperBound then yield t, row + 1L
-            let t = n + row + 1L
-            if t >= subsequentRowLowerBound && t <= subsequentRowUpperBound then yield t, row + 1L
+            if t >= subsequentRowLowerBound && t <= subsequentRowUpperBound then yield t, row + 1UL
+            let t = n + row + 1UL
+            if t >= subsequentRowLowerBound && t <= subsequentRowUpperBound then yield t, row + 1UL
         }
         neighbours |> Seq.filter (fun (t, _) -> pc.Check(t))
 
@@ -111,9 +115,9 @@ module PE196 =
                 let flag = isPrimeTriplet pc row n
                 if (pc.Check(n)) then printfn "%d, %d, %b" row n flag
 
-[1L..20L] |> List.map PE196.solveRowNoChecker |> printfn "%A"
-10000L |> PE196.solveRowNoChecker |> printfn "%A"  // 950007619L - c. <<< 1 second
-100000L |> PE196.solveRowNoChecker |> printfn "%A"  // 549999566882L - c. 6 seconds
-1000000L |> PE196.solveRowNoChecker |> printfn "%A"  // 463999977061648L - c. 8 minutes 43 seconds (2 minutes 21 seconds if use Array.Parallel...)
-//5678027L |> PE196.solveRowNoChecker |> printfn "%A"
-//7208785L |> PE196.solveRowNoChecker |> printfn "%A"
+//[1UL..20UL] |> List.map PE196.solveRowNoChecker |> printfn "%A"
+10000UL |> PE196.solveRowNoChecker |> printfn "%A"  // 950007619L - c. <<< 1 second
+//100000UL |> PE196.solveRowNoChecker |> printfn "%A"  // 549999566882L - c. 6 seconds
+//1000000UL |> PE196.solveRowNoChecker |> printfn "%A"  // 463999977061648L - c. 8 minutes 43 seconds (2 minutes 21 seconds if use Array.Parallel...)
+//5678027UL |> PE196.solveRowNoChecker |> printfn "%A"
+//7208785UL |> PE196.solveRowNoChecker |> printfn "%A"
