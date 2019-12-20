@@ -51,52 +51,32 @@ def PE_196(row):
     >>> PE_196(7208785)
     242605983970758409
     """
-    if row < 3:
-        raise ValueError("n cannot be less than 3")
+    def T(k):
+        return k * (k - 1) // 2
     def is_prime_triplet(row, n):
         def get_neighbours(row, n):
-            lowerBound = 1 + T(row)
-            upperBound = row + T(row)
-            if n < lowerBound or n > upperBound:
+            lower_bound, upper_bound = 1 + T(row), row + T(row)
+            if n < lower_bound or n > upper_bound:
                 raise ValueError("invalid arguments")
-            previousRowLowerBound = 1 + T(row - 1)
-            previousRowUpperBound = lowerBound - 1
-            subsequentRowLowerBound = upperBound + 1
-            subsequentRowUpperBound = subsequentRowLowerBound + row
             def neighbours():
                 # previous row
-                t = n - row
-                if t >= previousRowLowerBound and t <= previousRowUpperBound:
-                    yield (t, row - 1)
-                t = n - row + 1
-                if t >= previousRowLowerBound and t <= previousRowUpperBound:
-                    yield (t, row - 1)
-                t = n - row + 2
-                if t >= previousRowLowerBound and t <= previousRowUpperBound:
-                    yield (t, row - 1)
+                for t in (n - row, n - row + 1, n - row + 2):
+                    if t >= 1 + T(row - 1) and t <= lower_bound - 1:
+                        yield (row - 1, t)
 
                 # current row
-                t = n - 1
-                if t >= lowerBound and t <= upperBound:
-                    yield (t, row)
-                t = n + 1
-                if t >= lowerBound and t <= upperBound:
-                    yield (t, row)
+                for t in (n - 1, n + 1):
+                    if t >= lower_bound and t <= upper_bound:
+                        yield (row, t)
 
                 # subsequent row
-                t = n + row - 1
-                if t >= subsequentRowLowerBound and t <= subsequentRowUpperBound:
-                    yield (t, row + 1)
-                t = n + row
-                if t >= subsequentRowLowerBound and t <= subsequentRowUpperBound:
-                    yield (t, row + 1)
-                t = n + row + 1
-                if t >= subsequentRowLowerBound and t <= subsequentRowUpperBound:
-                    yield (t, row + 1)
+                for t in (n + row - 1, n + row, n + row + 1):
+                    if t >= upper_bound + 1 and t <= upper_bound + row + 1:
+                        yield (row + 1, t)
 
-            for t, r in neighbours():
+            for r, t in neighbours():
                 if t in primes[r]:
-                    yield (t, r)
+                    yield (r, t)
         if n in primes[row]:
             neighbours = list(get_neighbours(row, n))
             if len(neighbours) == 0:
@@ -104,14 +84,14 @@ def PE_196(row):
             elif len(neighbours) >= 2:
                 return True
             else:
-                def extendedNeighbours(neighbours):
-                    for neighbour, row in neighbours:
+                def get_extended_neighbours(neighbours):
+                    for row, neighbour in neighbours:
                         yield from get_neighbours(row, neighbour)
-                return len(list(extendedNeighbours(neighbours))) >= 2
+                return len(list(get_extended_neighbours(neighbours))) >= 2
         else:
             return False
-    def T(k):
-        return k * (k - 1) // 2
+    if row < 3:
+        raise ValueError("n cannot be less than 3")
     primes = {k: set(get_primes_parallel(T(k) + 1, T(k + 1))) for k in range(row - 2, row + 3)}
     return sum(filter(partial(is_prime_triplet, row), primes[row]))
 
