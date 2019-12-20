@@ -1,3 +1,5 @@
+#! venv/bin/python
+
 """
 Each positive integer has up to eight neighbours in the triangle.
 
