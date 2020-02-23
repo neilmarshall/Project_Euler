@@ -1,3 +1,8 @@
+#! venv/bin/python3
+
+import os
+from concurrent.futures import ProcessPoolExecutor
+
 def solve(n):
     """
     >>> solve(1)
@@ -15,17 +20,19 @@ def solve(n):
     >>> solve(5)
     2192
     """
-    infer = lambda p, a: (10**n * a) / (p * a - 10**n)
+    print(f"Calculating solutions for {n} on process {os.getpid()}...")
+    infer = lambda p, a: int((10**n * a) / (p * a - 10**n))
     def solve_for_a(a):
-        solutions = 0
+        check_solution = lambda b: 10**n * (a + b) % (a * b) == 0
+        solutions = set()
         p = int(10**n / a) + 1
         b = infer(p, a)
         while b >= a:
-            if (abs(int(b) - b) == 0):
-                solutions += 1
+            if check_solution(b):
+                solutions.add((a, b))
             p += 1
             b = infer(p, a)
-        return solutions
+        return len(solutions)
     a = 1
     solutions = 0
     while True:
@@ -35,7 +42,11 @@ def solve(n):
         b = infer(p, a)
         if b < a:
             break
-    return solutions
+    print(f"{n}: {solutions}")
+    return solutions    
 
 if __name__ == '__main__':
-    import doctest; doctest.testmod(verbose=True)
+    #import doctest; doctest.testmod(verbose=True)
+    with ProcessPoolExecutor() as pool:
+        solutions = pool.map(solve, range(1, 10))
+        print(f"Total: {sum(solutions)}")
