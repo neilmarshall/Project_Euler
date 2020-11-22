@@ -36,36 +36,24 @@ open System.Threading
 let WriteLine (s : string) = System.Console.WriteLine(s)
 let pow = Math.Pow
 
-let solve (n : float) : int =
+let solve (n : int) : int =
     WriteLine(sprintf "Calculating value for %d on thread id %d" (int64 n) (Thread.CurrentThread.ManagedThreadId))
-    let infer (p : float) (a : float) = (pow(10.0, n) * a) / (p * a - pow(10.0, n))
-    let solve_for_a (a : float) : int =
-        let check_solution (b : float) =
-            let a, b = int64 a, int64 b
-            let scale = int64(pow(10.0, n))
-            scale * (a + b) % (a * b) = 0L
-        let mutable p = Math.Floor(pow(10.0, n) / a) + 1.0
-        let mutable b = infer p a
-        let solutions = System.Collections.Generic.HashSet<int64 * int64>()
-        while b >= a do
-            if check_solution b then
-                solutions.Add(int64 a, int64 b) |> ignore
-            if check_solution (b + 1.0) then
-                solutions.Add(int64 a, int64 (b + 1.0)) |> ignore
-            p <- p + 1.0
-            b <- infer p a
-        Seq.length solutions
-    let mutable a = 1.0
+    let solve_for_a (a : int64) : int =
+        let mutable pmin = int64(ceil(pow(10.0, float(n)) / (float(a))))
+        //let pmax = (int64(pow(10.0, float(n)) / (float(a)))) * 2L
+        let pmax = pmin * 2L
+        if pmin * a = int64(pow(10.0, float(n))) then
+            pmin <- pmin + 1L
+        //printfn "a: %d, p-min: %d, p-max: %d" a pmin pmax
+        let mutable s = 0
+        for p in pmin .. pmax do
+            if (a * int64(pow(10.0, float(n)))) % (p * a - int64(pow(10.0, float(n)))) = 0L then
+                s <- s + 1
+        s
     let mutable solutions = 0
-    let rec increment() =
+    for a in 1L .. (2L * int64(pow(10.0, float(n)))) do
         solutions <- solutions + solve_for_a a
-        a <- a + 1.0
-        let p = Math.Floor(pow(10.0, n) / a) + 1.0
-        let b = infer p a
-        if b < a then solutions else increment()
-    let solutions = increment()
     WriteLine(sprintf "%d: %d" (n |> int) solutions)
     solutions
 
-//[1.0 .. 5.0] |> List.iter (fun n -> printfn "%d: %d" (n |> int) (solve n))
-[|1.0 .. 9.0|] |> Array.Parallel.map solve |> printfn "%A"
+[|1 .. 9|] |> Array.Parallel.map solve |> printfn "%A"
